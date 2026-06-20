@@ -2,6 +2,11 @@
 import DisplayHeading from "./DisplayHeading.astro";
 import CartoonButton from "./CartoonButton.astro";
 import MijiMascot from "./MijiMascot.astro";
+import { toLocale } from "../i18n/config";
+import { useUI } from "../i18n/ui";
+
+const locale = toLocale(Astro.currentLocale);
+const ui = useUI(locale);
 ---
 
 <section class="relative overflow-hidden">
@@ -9,35 +14,30 @@ import MijiMascot from "./MijiMascot.astro";
     <div>
       <p class="mb-4 inline-flex items-center gap-2 rounded-full border-[3px] border-[var(--color-ink)] bg-[var(--color-mustard)] px-4 py-1 font-mono text-xs font-bold uppercase tracking-widest text-[var(--color-ink)]">
         <span class="h-2 w-2 rounded-full bg-[var(--color-tomato)]"></span>
-        Available for work · Press start
+        {ui.hero.badge}
       </p>
 
       <DisplayHeading as="h1" tone="cobalt" shadowTone="ink" size="xl">
         MIJAEL CAMA
       </DisplayHeading>
 
-      <p class="mt-6 max-w-xl text-lg md:text-xl leading-relaxed text-[var(--color-ink-soft)]">
-        <span class="font-bold text-[var(--color-tomato)]">Full Stack Developer</span>
-        especializado en mapas, geodata y CRMs. Identifico antipatrones y huecos
-        funcionales antes de que escalen — luego los convierto en soluciones
-        estables, optimizadas y sostenibles.
-      </p>
+      <p class="mt-6 max-w-xl text-lg md:text-xl leading-relaxed text-[var(--color-ink-soft)]" set:html={ui.hero.taglineHtml} />
 
       <div class="mt-8 flex flex-wrap items-center gap-4">
         <CartoonButton href="#projects" variant="tomato" size="lg">
-          Ver proyectos →
+          {ui.hero.ctaProjects}
         </CartoonButton>
         <CartoonButton href="#contact" variant="ink" size="lg">
-          Contactarme
+          {ui.hero.ctaContact}
         </CartoonButton>
       </div>
 
       <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-xs uppercase tracking-widest text-[var(--color-ink)]/70">
-        <span>📍 Lima, Perú</span>
+        <span>{ui.hero.metaLocation}</span>
         <span>·</span>
-        <span>Next · FastAPI · Flutter</span>
+        <span>{ui.hero.metaStack}</span>
         <span>·</span>
-        <span>+4 años en producción</span>
+        <span>{ui.hero.metaYears}</span>
       </div>
     </div>
 

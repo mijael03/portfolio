@@ -3,7 +3,14 @@ import SectionLabel from "./SectionLabel.astro";
 import DisplayHeading from "./DisplayHeading.astro";
 import CartoonButton from "./CartoonButton.astro";
 import Decor from "./Decor.astro";
-import { channels, email } from "../data/contact";
+import MijiMascot from "./MijiMascot.astro";
+import { getChannels, email } from "../data/contact";
+import { toLocale } from "../i18n/config";
+import { useUI } from "../i18n/ui";
+
+const locale = toLocale(Astro.currentLocale);
+const ui = useUI(locale);
+const channels = getChannels(locale);
 ---
 
 <section id="contact" class="relative overflow-hidden bg-[var(--color-tomato)] text-[var(--color-paper)] border-t-[5px] border-[var(--color-ink)]">
@@ -11,18 +18,16 @@ import { channels, email } from "../data/contact";
     <div class="flex flex-wrap items-center justify-between gap-4">
       <SectionLabel tone="paper" number="06">CONTINUE?</SectionLabel>
       <span class="font-mono text-xs uppercase tracking-widest text-[var(--color-paper)]/70 animate-pulse">
-        ▌ INSERT COIN
+        {ui.continue.insertCoin}
       </span>
     </div>
 
     <DisplayHeading as="h2" tone="paper" shadowTone="ink" size="xl" class="mt-6">
-      READY PLAYER 2?
+      {ui.continue.heading}
     </DisplayHeading>
 
     <p class="mt-6 max-w-2xl text-lg text-[var(--color-paper)]/95">
-      Si tenés un proyecto donde encaje, una idea sin pulir, o solo querés
-      charlar de mapas, antipatrones y cómics — la línea está abierta.
-      Disponibilidad por las noches (zona horaria Lima, GMT-5).
+      {ui.continue.intro}
     </p>
 
     <div class="mt-10 grid gap-12 lg:grid-cols-[1.3fr_1fr]">
@@ -58,13 +63,11 @@ import { channels, email } from "../data/contact";
 
       <!-- Mascot placeholder despedida + CTA -->
       <div class="flex flex-col gap-6">
-        <!-- TODO: reemplazar por <MijiMascot variant="wave-bye" /> -->
+        <!-- MIJI · variante "bye" -->
         <div
-          class="grid aspect-square place-items-center rounded-2xl border-[5px] border-dashed border-[var(--color-paper)] bg-[var(--color-paper)]/10"
+          class="grid place-items-center rounded-2xl border-[5px] border-[var(--color-paper)] bg-[var(--color-paper)]/10 p-6"
         >
-          <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-paper)]/70 text-center px-4">
-            ☐ MIJI · variante "wave-bye"
-          </p>
+          <MijiMascot variant="bye" class="max-w-[260px]" />
         </div>
 
         <div
@@ -72,14 +75,14 @@ import { channels, email } from "../data/contact";
           style="box-shadow: 8px 8px 0 0 var(--color-ink);"
         >
           <p class="font-display text-lg leading-tight text-[var(--color-cobalt)]">
-            PRESS START
+            {ui.continue.pressStart}
           </p>
           <p class="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
-            ¿Prefieres ir directo? Mandame un email con el contexto del proyecto.
+            {ui.continue.pressStartBody}
           </p>
           <div class="mt-4">
-            <CartoonButton href={`mailto:${email}`} variant="tomato" size="md">
-              Mandar email →
+            <CartoonButton href={`mailto:${email}`} variant="tomato" size="md" data-sfx="click">
+              {ui.continue.emailButton}
             </CartoonButton>
           </div>
         </div>

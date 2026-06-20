@@ -3,7 +3,13 @@ import SectionLabel from "./SectionLabel.astro";
 import DisplayHeading from "./DisplayHeading.astro";
 import ProjectCartridge from "./ProjectCartridge.astro";
 import Decor from "./Decor.astro";
-import { projects } from "../data/projects";
+import { getProjects } from "../data/projects";
+import { toLocale } from "../i18n/config";
+import { useUI } from "../i18n/ui";
+
+const locale = toLocale(Astro.currentLocale);
+const ui = useUI(locale);
+const projects = getProjects(locale);
 ---
 
 <section id="projects" class="relative overflow-hidden bg-[var(--color-paper)] border-t-[5px] border-[var(--color-ink)]">
@@ -11,17 +17,16 @@ import { projects } from "../data/projects";
     <div class="flex flex-wrap items-center justify-between gap-4">
       <SectionLabel tone="cobalt" number="02">GAME SELECT</SectionLabel>
       <span class="font-mono text-xs uppercase tracking-widest text-[var(--color-ink)]/60">
-        {projects.length} CARTRIDGES · PRESS A TO INSERT
+        {ui.gameSelect.cartridges(projects.length)}
       </span>
     </div>
 
     <DisplayHeading as="h2" tone="tomato" shadowTone="ink" size="lg" class="mt-6">
-      PROYECTOS
+      {ui.gameSelect.heading}
     </DisplayHeading>
 
     <p class="mt-6 max-w-2xl text-lg text-[var(--color-ink-soft)]">
-      Cuatro de los cartuchos en los que estuve metido recientemente.
-      Tocá uno para entrar (las páginas de detalle vienen pronto).
+      {ui.gameSelect.intro}
     </p>
 
     <div class="mt-14 grid gap-8 md:grid-cols-2">

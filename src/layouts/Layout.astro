@@ -3,24 +3,30 @@ import "../styles/globals.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import HalftoneOverlay from "../components/HalftoneOverlay.astro";
+import SoundEngine from "../components/SoundEngine.astro";
+import { toLocale } from "../i18n/config";
+import { useUI } from "../i18n/ui";
 
 interface Props {
   title?: string;
   description?: string;
 }
 
-const {
-  title = "Mijael Cama · Full Stack Developer",
-  description = "Portfolio de Mijael Cama — Full Stack Developer especializado en mapas, geodata y CRMs.",
-} = Astro.props;
+const locale = toLocale(Astro.currentLocale);
+const ui = useUI(locale);
 
-// Canonical + og:url sólo cuando haya dominio: setear `site` en astro.config.mjs
-// al momento del deploy (D22) y esto se activa solo.
+const { title = ui.meta.title, description = ui.meta.description } = Astro.props;
+
+// Canonical + og:url sólo cuando haya dominio: setear `site` en astro.config.mjs.
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 
-// og:image necesita URL absoluta para que las redes la muestren. Si aún no hay
-// dominio propio (`site` sin setear), usamos el dominio de producción que Vercel
-// inyecta en build (VERCEL_PROJECT_PRODUCTION_URL) → funciona sin configurar nada.
+// hreflang: ruta por locale (ES en "/", EN en "/en/"). Absoluta si hay `site`.
+const pathForLocale = (l: "es" | "en") => (l === "es" ? "/" : "/en/");
+const hrefFor = (l: "es" | "en") =>
+  Astro.site ? new URL(pathForLocale(l), Astro.site).href : pathForLocale(l);
+
+// og:image necesita URL absoluta. Si no hay `site`, usamos el dominio que Vercel
+// inyecta en build (VERCEL_PROJECT_PRODUCTION_URL).
 const vercelHost =
   import.meta.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_PROJECT_PRODUCTION_URL;
 const prodOrigin = Astro.site?.origin ?? (vercelHost ? `https://${vercelHost}` : undefined);
@@ -28,7 +34,7 @@ const ogImage = `${prodOrigin ?? ""}/og-image.png`;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -41,21 +47,23 @@ const ogImage = `${prodOrigin ?? ""}/og-image.png`;
     <meta name="theme-color" content="#f5f1e8" />
     {canonical && <link rel="canonical" href={canonical} />}
 
+    <!-- hreflang: variantes por idioma -->
+    <link rel="alternate" hreflang="es" href={hrefFor("es")} />
+    <link rel="alternate" hreflang="en" href={hrefFor("en")} />
+    <link rel="alternate" hreflang="x-default" href={hrefFor("es")} />
+
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content="mijael.dev" />
-    <meta property="og:locale" content="es_PE" />
+    <meta property="og:locale" content={ui.meta.ogLocale} />
     {canonical && <meta property="og:url" content={canonical} />}
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta
-      property="og:image:alt"
-      content="MIJAEL CAMA — Full Stack Developer · mapas, geodata y CRMs"
-    />
+    <meta property="og:image:alt" content={ui.meta.ogImageAlt} />
 
     <!-- Twitter card -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -64,12 +72,13 @@ const ogImage = `${prodOrigin ?? ""}/og-image.png`;
     <meta name="twitter:image" content={ogImage} />
   </head>
   <body class="min-h-screen flex flex-col">
-    <a href="#main" class="skip-link">Saltar al contenido</a>
+    <a href="#main" class="skip-link">{ui.a11y.skipLink}</a>
     <Header />
     <main id="main" class="flex-1">
       <slot />
     </main>
     <Footer />
     <HalftoneOverlay intensity={0.08} />
+    <SoundEngine />
   </body>
 </html>

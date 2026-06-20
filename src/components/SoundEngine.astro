@@ -1,0 +1,155 @@
+---
+// SoundEngine — SFX chiptune sintetizados con Web Audio (cero archivos).
+// Opt-in: default OFF, se recuerda en localStorage. El AudioContext se crea
+// recién con el primer gesto del usuario (política de autoplay).
+//
+// Sonidos: blip (hover), click (confirmar), toggle (prender sonido),
+// coin (cartuchos), success (descarga CV). Se disparan vía selectores y
+// el atributo data-sfx="click|coin|success".
+---
+
+<script>
+  type Sfx = "blip" | "click" | "toggle" | "coin" | "success";
+
+  const STORAGE_KEY = "sfx-enabled";
+  let enabled = false;
+  try {
+    enabled = localStorage.getItem(STORAGE_KEY) === "1";
+  } catch {}
+
+  let ctx: AudioContext | null = null;
+  let master: GainNode | null = null;
+
+  function audio(): AudioContext | null {
+    const AC = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AC) return null;
+    if (!ctx) {
+      ctx = new AC();
+      master = ctx.createGain();
+      master.gain.value = 0.5;
+      master.connect(ctx.destination);
+    }
+    if (ctx.state === "suspended") ctx.resume();
+    return ctx;
+  }
+
+  // Una nota square con envelope rápido (attack 5ms + decay exponencial).
+  function tone(
+    freq: number,
+    startOffset: number,
+    dur: number,
+    type: OscillatorType = "square",
+    peak = 0.08,
+  ) {
+    const c = ctx;
+    if (!c || !master) return;
+    const t0 = c.currentTime + startOffset;
+    const osc = c.createOscillator();
+    const g = c.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, t0);
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.linearRampToValueAtTime(peak, t0 + 0.005);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+    osc.connect(g);
+    g.connect(master);
+    osc.start(t0);
+    osc.stop(t0 + dur + 0.02);
+  }
+
+  const sfx: Record<Sfx, () => void> = {
+    blip: () => tone(880, 0, 0.06, "square", 0.045),
+    click: () => {
+      tone(660, 0, 0.05, "square", 0.07);
+      tone(440, 0.05, 0.07, "square", 0.06);
+    },
+    toggle: () => {
+      tone(523.25, 0, 0.05, "square", 0.07);
+      tone(783.99, 0.05, 0.09, "square", 0.07);
+    },
+    coin: () => {
+      tone(987.77, 0, 0.07, "square", 0.07);
+      tone(1318.51, 0.07, 0.18, "square", 0.07);
+    },
+    success: () => {
+      tone(523.25, 0, 0.08, "square", 0.07); // C5
+      tone(659.25, 0.08, 0.08, "square", 0.07); // E5
+      tone(783.99, 0.16, 0.08, "square", 0.07); // G5
+      tone(1046.5, 0.24, 0.16, "square", 0.07); // C6
+    },
+  };
+
+  let lastPlay = 0;
+  function play(name: Sfx) {
+    if (!enabled) return;
+    if (!audio()) return;
+    // throttle: evita ráfagas de blips al barrer el mouse
+    const now = performance.now();
+    if (name === "blip" && now - lastPlay < 45) return;
+    lastPlay = now;
+    sfx[name]();
+  }
+
+  // ── Estado del toggle ──────────────────────────────────────────────
+  const soundBtn = document.querySelector<HTMLButtonElement>('[data-toggle="sound"]');
+
+  function reflect() {
+    if (soundBtn) soundBtn.dataset.sound = enabled ? "on" : "off";
+  }
+  reflect();
+
+  soundBtn?.addEventListener("click", () => {
+    enabled = !enabled;
+    try {
+      localStorage.setItem(STORAGE_KEY, enabled ? "1" : "0");
+    } catch {}
+    reflect();
+    if (enabled) {
+      audio();
+      sfx.toggle();
+    }
+  });
+
+  // Si quedó habilitado de una sesión previa, desbloquear el ctx al primer gesto.
+  if (enabled) {
+    const unlock = () => {
+      audio();
+      window.removeEventListener("pointerdown", unlock);
+      window.removeEventListener("keydown", unlock);
+    };
+    window.addEventListener("pointerdown", unlock, { once: true });
+    window.addEventListener("keydown", unlock, { once: true });
+  }
+
+  // ── Bindings de sonido ─────────────────────────────────────────────
+  // Hover (blip) en elementos interactivos clave.
+  const hoverTargets = document.querySelectorAll<HTMLElement>(
+    "header a, header button, .cartoon-btn",
+  );
+  for (const el of hoverTargets) {
+    el.addEventListener("pointerenter", () => play("blip"), { passive: true });
+  }
+
+  // Coin al entrar a un cartucho de proyecto.
+  for (const card of document.querySelectorAll<HTMLElement>("[data-cartridge]")) {
+    card.addEventListener("pointerenter", () => play("coin"), { passive: true });
+  }
+
+  // Click: usa data-sfx si está, si no un "click" genérico en CTAs.
+  document.addEventListener(
+    "click",
+    (e) => {
+      if (!enabled) return;
+      if (!(e.target instanceof Element)) return;
+      const tagged = e.target.closest<HTMLElement>("[data-sfx]");
+      if (tagged) {
+        const name = tagged.dataset.sfx as Sfx;
+        if (name && name in sfx) play(name);
+        return;
+      }
+      // CTA genérico sin data-sfx → click
+      if (e.target.closest(".cartoon-btn")) play("click");
+    },
+    { passive: true },
+  );
+</script>

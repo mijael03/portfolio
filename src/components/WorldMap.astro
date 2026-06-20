@@ -2,30 +2,19 @@
 import SectionLabel from "./SectionLabel.astro";
 import DisplayHeading from "./DisplayHeading.astro";
 import Decor from "./Decor.astro";
+import { toLocale } from "../i18n/config";
+import { useUI } from "../i18n/ui";
 
-const pins = [
-  {
-    label: "Zefiron CRM",
-    sublabel: "CRM inmobiliario · Navia",
-    stack: "Flutter · FastAPI · PostgreSQL",
-    coord: { x: 38, y: 52 },
-    tone: "tomato",
-  },
-  {
-    label: "Apps Innova ECG",
-    sublabel: "DBs geoespaciales · 2023",
-    stack: "Android · NestJS · Django",
-    coord: { x: 62, y: 38 },
-    tone: "mustard",
-  },
-  {
-    label: "Mapas / Geo",
-    sublabel: "Especialidad declarada",
-    stack: "PostGIS · Vectorial · Pins",
-    coord: { x: 52, y: 70 },
-    tone: "mint",
-  },
+const locale = toLocale(Astro.currentLocale);
+const ui = useUI(locale);
+
+// Coordenadas (layout) acá; el texto de cada pin viene localizado del diccionario.
+const coords = [
+  { x: 38, y: 52 },
+  { x: 62, y: 38 },
+  { x: 52, y: 70 },
 ];
+const pins = ui.worldMap.pins.map((p, i) => ({ ...p, coord: coords[i] }));
 ---
 
 <section id="world-map" class="relative overflow-hidden bg-[var(--color-ink)] text-[var(--color-paper)] border-y-[5px] border-[var(--color-ink)]">
@@ -33,18 +22,16 @@ const pins = [
     <div class="flex flex-wrap items-center justify-between gap-4">
       <SectionLabel tone="mustard" number="05">WORLD MAP</SectionLabel>
       <span class="font-mono text-xs uppercase tracking-widest text-[var(--color-paper)]/60">
-        SPECIALTY · GEO · {pins.length} PINS
+        {ui.worldMap.meta(pins.length)}
       </span>
     </div>
 
     <DisplayHeading as="h2" tone="mustard" shadowTone="paper" size="lg" class="mt-6">
-      MAPAS Y GEODATA
+      {ui.worldMap.heading}
     </DisplayHeading>
 
     <p class="mt-6 max-w-2xl text-lg text-[var(--color-paper)]/85">
-      Una sección dedicada a proyectos donde la data geográfica es protagonista.
-      Cada pin abre detalle del caso: qué hicimos, qué reto técnico tenía
-      el geo y cómo lo resolvimos.
+      {ui.worldMap.intro}
     </p>
 
     <div class="mt-12 grid gap-8 lg:grid-cols-[1.4fr_1fr]">
@@ -92,11 +79,11 @@ const pins = [
 
         <!-- Coord label como decoración -->
         <div class="absolute left-3 bottom-3 rounded-md border-[2px] border-[var(--color-mustard)] bg-[var(--color-ink)] px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-[var(--color-mustard)]">
-          [ 12.04° S · 77.04° W ] LIMA · PE
+          {ui.worldMap.coordLabel}
         </div>
 
         <div class="absolute right-3 top-3 rounded-md border-[2px] border-[var(--color-mustard)] bg-[var(--color-ink)] px-2 py-1 font-mono text-[9px] uppercase tracking-widest text-[var(--color-mustard)]/80">
-          ☐ MAPA INTERACTIVO · WIP
+          {ui.worldMap.wip}
         </div>
       </div>
 

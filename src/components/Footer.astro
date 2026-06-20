@@ -1,6 +1,11 @@
 ---
-import { footerLinks } from "../data/contact";
+import { getFooterLinks } from "../data/contact";
+import { toLocale } from "../i18n/config";
+import { useUI } from "../i18n/ui";
 
+const locale = toLocale(Astro.currentLocale);
+const ui = useUI(locale);
+const footerLinks = getFooterLinks(locale);
 const year = new Date().getFullYear();
 ---
 
@@ -9,7 +14,7 @@ const year = new Date().getFullYear();
     <div>
       <p class="font-display text-3xl leading-none">MIJAEL CAMA</p>
       <p class="mt-2 font-mono text-xs uppercase tracking-widest opacity-80">
-        Full Stack Developer · Lima, Perú
+        {ui.footer.roleLine}
       </p>
     </div>
 
@@ -28,6 +33,6 @@ const year = new Date().getFullYear();
       }
     </div>
 
-    <p class="font-mono text-xs uppercase tracking-widest opacity-60">© {year} · GAME OVER</p>
+    <p class="font-mono text-xs uppercase tracking-widest opacity-60">{ui.footer.gameOver(year)}</p>
   </div>
 </footer>

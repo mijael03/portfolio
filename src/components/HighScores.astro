@@ -2,7 +2,13 @@
 import SectionLabel from "./SectionLabel.astro";
 import DisplayHeading from "./DisplayHeading.astro";
 import Decor from "./Decor.astro";
-import { experience } from "../data/experience";
+import { getExperience } from "../data/experience";
+import { toLocale } from "../i18n/config";
+import { useUI } from "../i18n/ui";
+
+const locale = toLocale(Astro.currentLocale);
+const ui = useUI(locale);
+const experience = getExperience(locale);
 
 const topThree = experience.slice(0, 3);
 const rest = experience.slice(3);
@@ -15,12 +21,12 @@ const podiumTone = ["mustard", "paper-deep", "tomato"] as const;
     <div class="flex flex-wrap items-center justify-between gap-4">
       <SectionLabel tone="tomato" number="04">HIGH SCORES</SectionLabel>
       <span class="font-mono text-xs uppercase tracking-widest text-[var(--color-ink)]/60">
-        LEADERBOARD · LAST {experience.length} RUNS
+        {ui.highScores.leaderboard(experience.length)}
       </span>
     </div>
 
     <DisplayHeading as="h2" tone="cobalt" shadowTone="ink" size="lg" class="mt-6">
-      EXPERIENCIA
+      {ui.highScores.heading}
     </DisplayHeading>
 
     <!-- Podio: top 3 -->
@@ -75,9 +81,9 @@ const podiumTone = ["mustard", "paper-deep", "tomato"] as const;
     <!-- Resto del leaderboard -->
     <div class="mt-12 rounded-2xl border-[5px] border-[var(--color-ink)] bg-[var(--color-paper-deep)] overflow-hidden" style="box-shadow: 10px 10px 0 0 var(--color-ink);">
       <div class="grid grid-cols-[60px_1fr_auto] items-center gap-4 border-b-[3px] border-[var(--color-ink)] bg-[var(--color-ink)] px-6 py-3 text-[var(--color-paper)]">
-        <span class="font-mono text-[10px] uppercase tracking-widest opacity-70">RANK</span>
-        <span class="font-mono text-[10px] uppercase tracking-widest opacity-70">COMPANY · ROLE</span>
-        <span class="font-mono text-[10px] uppercase tracking-widest opacity-70">PERIOD</span>
+        <span class="font-mono text-[10px] uppercase tracking-widest opacity-70">{ui.highScores.colRank}</span>
+        <span class="font-mono text-[10px] uppercase tracking-widest opacity-70">{ui.highScores.colCompany}</span>
+        <span class="font-mono text-[10px] uppercase tracking-widest opacity-70">{ui.highScores.colPeriod}</span>
       </div>
       {
         rest.map((exp) => (

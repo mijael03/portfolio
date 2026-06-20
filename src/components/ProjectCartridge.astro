@@ -1,11 +1,15 @@
 ---
 import type { Project } from "../data/projects";
+import { toLocale } from "../i18n/config";
+import { useUI } from "../i18n/ui";
 
 interface Props {
   project: Project;
 }
 
 const { project } = Astro.props;
+const locale = toLocale(Astro.currentLocale);
+const ui = useUI(locale);
 
 const toneBg: Record<Project["cartridgeTone"], string> = {
   cobalt: "bg-[var(--color-cobalt)] text-[var(--color-paper)]",
@@ -37,27 +41,35 @@ const toneInverse: Record<Project["cartridgeTone"], string> = {
     </span>
   </div>
 
-  <!-- Screenshot placeholder -->
-  <!-- TODO: reemplazar por <ProjectShot slug={project.slug} /> cuando tenga screenshots reales -->
-  <div
-    class="relative grid aspect-[16/10] place-items-center border-b-[4px] border-[var(--color-ink)] bg-[var(--color-ink)]/15"
-  >
-    <div class="text-center">
-      <p class="font-mono text-xs uppercase tracking-widest opacity-70">
-        ☐ Screenshot
-      </p>
-      <p class="mt-1 font-display text-lg leading-tight">
-        {project.screenshotPlaceholder}
-      </p>
-    </div>
-    {project.highlight && (
-      <span
-        class="absolute -right-2 -top-2 rotate-6 rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-mustard)] px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest text-[var(--color-ink)]"
-        style="box-shadow: 2px 2px 0 0 var(--color-ink);"
-      >
-        ★ Featured
+  <!-- Screenshot real en marco tipo navegador (unifica capturas de temas distintos) -->
+  <div class="border-b-[4px] border-[var(--color-ink)]">
+    <!-- barra de navegador: traffic-lights + título -->
+    <div class={`flex items-center gap-1.5 border-b-[3px] border-[var(--color-ink)] px-3 py-2 ${toneInverse[project.cartridgeTone]}`}>
+      <span class="h-2.5 w-2.5 rounded-full border-[1.5px] border-[var(--color-ink)] bg-[var(--color-tomato)]"></span>
+      <span class="h-2.5 w-2.5 rounded-full border-[1.5px] border-[var(--color-ink)] bg-[var(--color-mustard)]"></span>
+      <span class="h-2.5 w-2.5 rounded-full border-[1.5px] border-[var(--color-ink)] bg-[var(--color-cobalt)]"></span>
+      <span class="ml-2 truncate font-mono text-[9px] font-bold uppercase tracking-widest opacity-70">
+        {project.subtitle}
       </span>
-    )}
+    </div>
+    <!-- captura: 2:1 = casi sin recorte; object-top protege headers/KPIs -->
+    <div class="relative aspect-[2/1] overflow-hidden bg-[var(--color-ink)]">
+      <img
+        src={project.screenshot}
+        alt={project.screenshotAlt}
+        loading="lazy"
+        decoding="async"
+        class="h-full w-full object-cover object-top"
+      />
+      {project.highlight && (
+        <span
+          class="absolute -right-2 -top-2 z-10 rotate-6 rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-mustard)] px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest text-[var(--color-ink)]"
+          style="box-shadow: 2px 2px 0 0 var(--color-ink);"
+        >
+          {ui.gameSelect.featured}
+        </span>
+      )}
+    </div>
   </div>
 
   <!-- Body -->
@@ -102,7 +114,7 @@ const toneInverse: Record<Project["cartridgeTone"], string> = {
       </span>
       <!-- TODO: link a /proyectos/[slug] cuando existan detail pages -->
       <span class="font-mono text-[10px] font-bold uppercase tracking-widest opacity-50">
-        DETAILS · soon
+        {ui.gameSelect.detailsSoon}
       </span>
     </div>
   </div>

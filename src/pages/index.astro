@@ -1,36 +1,10 @@
 ---
+// Home ES (locale default → "/"). El copy/datos salen por Astro.currentLocale.
+// Pendientes y roadmap: ver PROGRESS.md en la raíz del repo.
 import Layout from "../layouts/Layout.astro";
-import Hero from "../components/Hero.astro";
-import PlayerOne from "../components/PlayerOne.astro";
-import GameSelect from "../components/GameSelect.astro";
-import PowerUps from "../components/PowerUps.astro";
-import HighScores from "../components/HighScores.astro";
-import WorldMap from "../components/WorldMap.astro";
-import ContinueSection from "../components/ContinueSection.astro";
+import Home from "../components/Home.astro";
 ---
 
 <Layout>
-  <Hero />
-  <PlayerOne />
-  <GameSelect />
-  <PowerUps />
-  <HighScores />
-  <WorldMap />
-  <ContinueSection />
+  <Home />
 </Layout>
-
-<!--
-  PLACEHOLDERS PENDIENTES (en orden de impacto visual):
-  1. Mascota MIJI
-     - Hero · variante "wave"            ✓ ENCHUFADO (src/components/MijiMascot.astro)
-     - PlayerOne · variante "thinking"   → bloque dashed pink en PlayerOne.astro
-     - Continue?  · variante "wave-bye"  → bloque dashed paper en ContinueSection.astro
-  2. Screenshots reales de proyectos     → ProjectCartridge.astro (data/projects.ts)
-  3. Íconos de stack                     ✓ ENCHUFADOS (SkillIcon.astro + simple-icons, 25/33)
-  4. Mapa interactivo (Leaflet/MapLibre)  → WorldMap.astro
-  5. Microinteracciones Motion           ✓ ENCHUFADAS (botones, cartuchos, level bars, pupilas)
-  6. Audio bindings (toggle ya está)     → sound pack chiptune cuando lleguemos
-  7. i18n EN (toggle ya está)            → astro content collections ES/EN
-     · copy ya centralizado en src/data/{profile,contact}.ts (pre-requisito)
-  8. Detail pages /proyectos/[slug]       → CTA "DETAILS · soon" en ProjectCartridge
--->

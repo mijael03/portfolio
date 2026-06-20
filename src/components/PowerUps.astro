@@ -3,7 +3,13 @@ import SectionLabel from "./SectionLabel.astro";
 import DisplayHeading from "./DisplayHeading.astro";
 import Decor from "./Decor.astro";
 import SkillIcon from "./SkillIcon.astro";
-import { skillCategories } from "../data/skills";
+import { getSkillCategories } from "../data/skills";
+import { toLocale } from "../i18n/config";
+import { useUI } from "../i18n/ui";
+
+const locale = toLocale(Astro.currentLocale);
+const ui = useUI(locale);
+const skillCategories = getSkillCategories(locale);
 ---
 
 <section id="skills" class="relative overflow-hidden bg-[var(--color-cobalt)] text-[var(--color-paper)] border-y-[5px] border-[var(--color-ink)]">
@@ -11,18 +17,16 @@ import { skillCategories } from "../data/skills";
     <div class="flex flex-wrap items-center justify-between gap-4">
       <SectionLabel tone="mustard" number="03">POWER-UPS</SectionLabel>
       <span class="font-mono text-xs uppercase tracking-widest text-[var(--color-paper)]/70">
-        INVENTORY · {skillCategories.reduce((acc, c) => acc + c.skills.length, 0)} ITEMS
+        {ui.powerUps.inventory(skillCategories.reduce((acc, c) => acc + c.skills.length, 0))}
       </span>
     </div>
 
     <DisplayHeading as="h2" tone="paper" shadowTone="ink" size="lg" class="mt-6">
-      SKILLS
+      {ui.powerUps.heading}
     </DisplayHeading>
 
     <p class="mt-6 max-w-2xl text-lg text-[var(--color-paper)]/90">
-      Cada item es un power-up que vengo usando en proyectos reales.
-      El "lvl" es honestidad de uso, no marketing — main set vs cosas que
-      he tocado lo suficiente para resolverlas.
+      {ui.powerUps.intro}
     </p>
 
     <div class="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -54,7 +58,7 @@ import { skillCategories } from "../data/skills";
                   </span>
                   <span class="flex-1 font-mono text-sm">{s.name}</span>
                   {/* Level bar */}
-                  <span class="flex gap-0.5" aria-label={`Level ${s.level} of 5`}>
+                  <span class="flex gap-0.5" aria-label={ui.powerUps.levelAria(s.level)}>
                     {Array.from({ length: 5 }, (_, i) => (
                       <span
                         data-level-cell={i < s.level ? "" : undefined}
@@ -77,9 +81,9 @@ import { skillCategories } from "../data/skills";
       class="mt-12 flex flex-wrap items-center gap-4 rounded-2xl border-[5px] border-[var(--color-ink)] bg-[var(--color-mustard)] p-6 text-[var(--color-ink)]"
       style="box-shadow: 8px 8px 0 0 var(--color-ink);"
     >
-      <span class="font-mono text-xs font-bold uppercase tracking-widest">⚡ SPECIALTY</span>
+      <span class="font-mono text-xs font-bold uppercase tracking-widest">{ui.powerUps.specialtyLabel}</span>
       <p class="flex-1 font-display text-xl leading-tight md:text-2xl">
-        Mapas · Data geográfica · CRMs · Detección de antipatrones e interoperabilidad FE ↔ BE
+        {ui.powerUps.specialty}
       </p>
     </div>
   </div>

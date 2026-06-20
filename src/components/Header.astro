@@ -1,11 +1,13 @@
 ---
-const navItems = [
-  { href: "#about", label: "Player 1" },
-  { href: "#projects", label: "Game Select" },
-  { href: "#skills", label: "Power-Ups" },
-  { href: "#experience", label: "High Scores" },
-  { href: "#contact", label: "Continue?" },
-];
+import { toLocale, otherLocale } from "../i18n/config";
+import { useUI } from "../i18n/ui";
+
+const locale = toLocale(Astro.currentLocale);
+const ui = useUI(locale);
+const navItems = ui.nav.items;
+
+const other = otherLocale(locale);
+const otherHref = other === "es" ? "/" : "/en/";
 ---
 
 <header class="sticky top-0 z-40 border-b-[3px] border-[var(--color-ink)] bg-[var(--color-paper)]/95 backdrop-blur">
@@ -33,27 +35,29 @@ const navItems = [
     </nav>
 
     <div class="flex items-center gap-2">
-      <button
-        type="button"
-        aria-label="Toggle language"
+      <a
+        href={otherHref}
+        aria-label={ui.a11y.toggleLang}
         class="flex items-center gap-1 rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-paper)] px-3 py-1.5 font-mono text-xs font-bold uppercase tracking-wider text-[var(--color-ink)] transition-all hover:bg-[var(--color-cobalt)] hover:text-[var(--color-paper)]"
         style="box-shadow: 3px 3px 0 0 var(--color-ink);"
-        data-toggle="lang"
+        data-sfx="click"
       >
-        <span data-lang-current>ES</span>
+        <span>{locale.toUpperCase()}</span>
         <span class="opacity-50">/</span>
-        <span data-lang-other class="opacity-50">EN</span>
-      </button>
+        <span class="opacity-50">{other.toUpperCase()}</span>
+      </a>
 
       <button
         type="button"
-        aria-label="Toggle sound"
+        aria-label={ui.a11y.toggleSound}
         class="grid h-9 w-9 place-items-center rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-paper)] text-[var(--color-ink)] transition-all hover:bg-[var(--color-tomato)] hover:text-[var(--color-paper)]"
         style="box-shadow: 3px 3px 0 0 var(--color-ink);"
         data-toggle="sound"
         data-sound="off"
       >
+        <!-- icono OFF (silenciado) -->
         <svg
+          class="sfx-icon-off"
           xmlns="http://www.w3.org/2000/svg"
           width="18"
           height="18"
@@ -69,11 +73,31 @@ const navItems = [
           <line x1="22" y1="9" x2="16" y2="15"></line>
           <line x1="16" y1="9" x2="22" y2="15"></line>
         </svg>
+        <!-- icono ON (con ondas) -->
+        <svg
+          class="sfx-icon-on"
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M11 5 6 9H2v6h4l5 4z"></path>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        </svg>
       </button>
 
       <button
         type="button"
-        aria-label="Abrir menú"
+        aria-label={ui.a11y.openMenu}
+        data-label-open={ui.a11y.openMenu}
+        data-label-close={ui.a11y.closeMenu}
         aria-expanded="false"
         aria-controls="mobile-menu"
         data-menu-toggle
@@ -98,7 +122,7 @@ const navItems = [
     style="box-shadow: 0 8px 0 0 var(--color-ink);"
   >
     <p class="border-b-[2px] border-dashed border-[var(--color-ink)]/30 px-6 pb-2 pt-3 font-mono text-[10px] font-bold uppercase tracking-widest text-[var(--color-ink)]/50">
-      ▼ Select stage
+      {ui.nav.selectStage}
     </p>
     <nav>
       {
@@ -198,6 +222,17 @@ const navItems = [
   .mobile-menu[data-open] .menu-link:nth-child(5) {
     animation-delay: 180ms;
   }
+
+  /* Sonido: mostrar el ícono según el estado del toggle */
+  [data-toggle="sound"] .sfx-icon-on {
+    display: none;
+  }
+  [data-toggle="sound"][data-sound="on"] .sfx-icon-off {
+    display: none;
+  }
+  [data-toggle="sound"][data-sound="on"] .sfx-icon-on {
+    display: block;
+  }
 </style>
 
 <script>
@@ -206,9 +241,12 @@ const navItems = [
   const panel = document.querySelector<HTMLElement>("[data-menu-panel]");
 
   if (toggle && panel) {
+    const labelOpen = toggle.dataset.labelOpen || "Open menu";
+    const labelClose = toggle.dataset.labelClose || "Close menu";
+
     const setOpen = (open: boolean) => {
       toggle.setAttribute("aria-expanded", String(open));
-      toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+      toggle.setAttribute("aria-label", open ? labelClose : labelOpen);
       toggle.classList.toggle("is-open", open);
       panel.hidden = !open;
       if (open) panel.setAttribute("data-open", "");
