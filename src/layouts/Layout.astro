@@ -17,6 +17,14 @@ const {
 // Canonical + og:url sólo cuando haya dominio: setear `site` en astro.config.mjs
 // al momento del deploy (D22) y esto se activa solo.
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+
+// og:image necesita URL absoluta para que las redes la muestren. Si aún no hay
+// dominio propio (`site` sin setear), usamos el dominio de producción que Vercel
+// inyecta en build (VERCEL_PROJECT_PRODUCTION_URL) → funciona sin configurar nada.
+const vercelHost =
+  import.meta.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_PROJECT_PRODUCTION_URL;
+const prodOrigin = Astro.site?.origin ?? (vercelHost ? `https://${vercelHost}` : undefined);
+const ogImage = `${prodOrigin ?? ""}/og-image.png`;
 ---
 
 <!doctype html>
@@ -40,13 +48,20 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : un
     <meta property="og:site_name" content="mijael.dev" />
     <meta property="og:locale" content="es_PE" />
     {canonical && <meta property="og:url" content={canonical} />}
-    <!-- TODO(F04): og:image + twitter:image 1200×630 cuando esté el asset;
-         al agregarla, subir twitter:card a "summary_large_image" -->
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="MIJAEL CAMA — Full Stack Developer · mapas, geodata y CRMs"
+    />
 
     <!-- Twitter card -->
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
   </head>
   <body class="min-h-screen flex flex-col">
     <a href="#main" class="skip-link">Saltar al contenido</a>
