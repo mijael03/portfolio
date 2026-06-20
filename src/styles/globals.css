@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@import "@fontsource/bagel-fat-one/400.css";
+@import "@fontsource-variable/dm-sans";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+@import "@fontsource/ibm-plex-mono/700.css";
+
+@theme {
+  --color-paper: #f5f1e8;
+  --color-paper-deep: #ece5d3;
+  --color-ink: #1a1a2e;
+  --color-ink-soft: #2a2a44;
+  --color-cobalt: #2e6dd9;
+  --color-cobalt-deep: #1f4ea3;
+  --color-tomato: #e8483b;
+  --color-tomato-deep: #b8362b;
+  --color-mustard: #fcc936;
+  --color-mustard-deep: #d4a514;
+  --color-pink: #ffb3d1;
+  --color-mint: #6dd3a8;
+
+  --font-display: "Bagel Fat One", system-ui, sans-serif;
+  --font-body: "DM Sans Variable", "DM Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --shadow-cartoon: 4px 4px 0 0 var(--color-ink);
+  --shadow-cartoon-lg: 8px 8px 0 0 var(--color-ink);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Las anclas de la nav no quedan tapadas por el header sticky */
+[id] {
+  scroll-margin-top: 5.5rem;
+}
+
+html,
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--color-mustard);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-cobalt);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  border: 3px solid var(--color-ink);
+  border-radius: 0.375rem;
+  background: var(--color-mustard);
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  box-shadow: var(--shadow-cartoon);
+  transform: translateY(calc(-100% - 1.5rem));
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

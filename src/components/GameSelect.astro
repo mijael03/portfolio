@@ -1,0 +1,34 @@
+---
+import SectionLabel from "./SectionLabel.astro";
+import DisplayHeading from "./DisplayHeading.astro";
+import ProjectCartridge from "./ProjectCartridge.astro";
+import Decor from "./Decor.astro";
+import { projects } from "../data/projects";
+---
+
+<section id="projects" class="relative overflow-hidden bg-[var(--color-paper)] border-t-[5px] border-[var(--color-ink)]">
+  <div class="mx-auto max-w-7xl px-6 py-24 md:py-32">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <SectionLabel tone="cobalt" number="02">GAME SELECT</SectionLabel>
+      <span class="font-mono text-xs uppercase tracking-widest text-[var(--color-ink)]/60">
+        {projects.length} CARTRIDGES · PRESS A TO INSERT
+      </span>
+    </div>
+
+    <DisplayHeading as="h2" tone="tomato" shadowTone="ink" size="lg" class="mt-6">
+      PROYECTOS
+    </DisplayHeading>
+
+    <p class="mt-6 max-w-2xl text-lg text-[var(--color-ink-soft)]">
+      Cuatro de los cartuchos en los que estuve metido recientemente.
+      Tocá uno para entrar (las páginas de detalle vienen pronto).
+    </p>
+
+    <div class="mt-14 grid gap-8 md:grid-cols-2">
+      {projects.map((p) => <ProjectCartridge project={p} />)}
+    </div>
+  </div>
+
+  <Decor shape="plus" color="cobalt" size={36} class="absolute top-20 right-12 hidden lg:block rotate-12" />
+  <Decor shape="squiggle" color="tomato" size={50} class="absolute bottom-24 left-6 hidden md:block" />
+</section>

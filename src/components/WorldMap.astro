@@ -1,0 +1,131 @@
+---
+import SectionLabel from "./SectionLabel.astro";
+import DisplayHeading from "./DisplayHeading.astro";
+import Decor from "./Decor.astro";
+
+const pins = [
+  {
+    label: "Zefiron CRM",
+    sublabel: "CRM inmobiliario · Navia",
+    stack: "Flutter · FastAPI · PostgreSQL",
+    coord: { x: 38, y: 52 },
+    tone: "tomato",
+  },
+  {
+    label: "Apps Innova ECG",
+    sublabel: "DBs geoespaciales · 2023",
+    stack: "Android · NestJS · Django",
+    coord: { x: 62, y: 38 },
+    tone: "mustard",
+  },
+  {
+    label: "Mapas / Geo",
+    sublabel: "Especialidad declarada",
+    stack: "PostGIS · Vectorial · Pins",
+    coord: { x: 52, y: 70 },
+    tone: "mint",
+  },
+];
+---
+
+<section id="world-map" class="relative overflow-hidden bg-[var(--color-ink)] text-[var(--color-paper)] border-y-[5px] border-[var(--color-ink)]">
+  <div class="mx-auto max-w-7xl px-6 py-24 md:py-32">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <SectionLabel tone="mustard" number="05">WORLD MAP</SectionLabel>
+      <span class="font-mono text-xs uppercase tracking-widest text-[var(--color-paper)]/60">
+        SPECIALTY · GEO · {pins.length} PINS
+      </span>
+    </div>
+
+    <DisplayHeading as="h2" tone="mustard" shadowTone="paper" size="lg" class="mt-6">
+      MAPAS Y GEODATA
+    </DisplayHeading>
+
+    <p class="mt-6 max-w-2xl text-lg text-[var(--color-paper)]/85">
+      Una sección dedicada a proyectos donde la data geográfica es protagonista.
+      Cada pin abre detalle del caso: qué hicimos, qué reto técnico tenía
+      el geo y cómo lo resolvimos.
+    </p>
+
+    <div class="mt-12 grid gap-8 lg:grid-cols-[1.4fr_1fr]">
+      <!-- PLACEHOLDER: mapa interactivo -->
+      <!-- TODO: reemplazar por <InteractiveMap pins={pins} /> con Leaflet o MapLibre estilizado retro -->
+      <div
+        class="relative aspect-[4/3] overflow-hidden rounded-2xl border-[5px] border-[var(--color-mustard)] bg-[var(--color-ink-soft)]"
+        style="box-shadow: 10px 10px 0 0 var(--color-mustard);"
+      >
+        <!-- Grid retro como background -->
+        <div
+          class="absolute inset-0 opacity-30"
+          style="background-image: linear-gradient(var(--color-mustard) 1px, transparent 1px), linear-gradient(90deg, var(--color-mustard) 1px, transparent 1px); background-size: 40px 40px;"
+          aria-hidden="true"
+        ></div>
+
+        <!-- Outline ficticio Perú/Lima -->
+        <svg viewBox="0 0 100 100" class="absolute inset-0 h-full w-full" preserveAspectRatio="none">
+          <path
+            d="M 30 18 Q 26 30, 28 42 T 36 60 Q 42 70, 50 78 T 60 82 Q 68 80, 70 70 T 66 50 Q 60 38, 52 30 T 40 22 Z"
+            fill="var(--color-cobalt)"
+            fill-opacity="0.35"
+            stroke="var(--color-mustard)"
+            stroke-width="0.8"
+            stroke-dasharray="2 1.5"
+          ></path>
+        </svg>
+
+        <!-- Pins decorativos: la info real está en la lista de al lado.
+             Cuando llegue el mapa interactivo (D29) vuelven a ser interactivos. -->
+        {
+          pins.map((p) => (
+            <div
+              class="absolute -translate-x-1/2 -translate-y-full"
+              style={`left:${p.coord.x}%; top:${p.coord.y}%;`}
+              aria-hidden="true"
+            >
+              <span class="block h-6 w-6 rounded-full border-[3px] border-[var(--color-ink)] bg-[var(--color-tomato)] shadow-[3px_3px_0_0_var(--color-ink)]" style={`background-color: var(--color-${p.tone});`} />
+              <span class="absolute left-1/2 top-full -translate-x-1/2 mt-2 whitespace-nowrap rounded-md border-[2px] border-[var(--color-ink)] bg-[var(--color-paper)] px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest text-[var(--color-ink)]">
+                {p.label}
+              </span>
+            </div>
+          ))
+        }
+
+        <!-- Coord label como decoración -->
+        <div class="absolute left-3 bottom-3 rounded-md border-[2px] border-[var(--color-mustard)] bg-[var(--color-ink)] px-2 py-1 font-mono text-[10px] uppercase tracking-widest text-[var(--color-mustard)]">
+          [ 12.04° S · 77.04° W ] LIMA · PE
+        </div>
+
+        <div class="absolute right-3 top-3 rounded-md border-[2px] border-[var(--color-mustard)] bg-[var(--color-ink)] px-2 py-1 font-mono text-[9px] uppercase tracking-widest text-[var(--color-mustard)]/80">
+          ☐ MAPA INTERACTIVO · WIP
+        </div>
+      </div>
+
+      <!-- Lista de pins / proyectos geo -->
+      <ul class="space-y-4">
+        {
+          pins.map((p, i) => (
+            <li
+              class="rounded-2xl border-[3px] border-[var(--color-mustard)] bg-[var(--color-ink-soft)] p-5"
+              style="box-shadow: 6px 6px 0 0 var(--color-mustard);"
+            >
+              <div class="flex items-center gap-3">
+                <span class="grid h-8 w-8 place-items-center rounded-md border-[2px] border-[var(--color-ink)] bg-[var(--color-mustard)] font-mono text-xs font-bold text-[var(--color-ink)]">
+                  P{i + 1}
+                </span>
+                <h3 class="font-display text-xl text-[var(--color-mustard)]">{p.label}</h3>
+              </div>
+              <p class="mt-2 font-mono text-xs uppercase tracking-widest text-[var(--color-paper)]/80">
+                {p.sublabel}
+              </p>
+              <p class="mt-1 font-mono text-[11px] uppercase tracking-widest text-[var(--color-paper)]/60">
+                {p.stack}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <Decor shape="plus" color="mustard" size={32} class="absolute top-12 right-10 hidden md:block" />
+</section>

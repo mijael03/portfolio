@@ -1,0 +1,92 @@
+---
+import SectionLabel from "./SectionLabel.astro";
+import DisplayHeading from "./DisplayHeading.astro";
+import CartoonButton from "./CartoonButton.astro";
+import Decor from "./Decor.astro";
+import { channels, email } from "../data/contact";
+---
+
+<section id="contact" class="relative overflow-hidden bg-[var(--color-tomato)] text-[var(--color-paper)] border-t-[5px] border-[var(--color-ink)]">
+  <div class="mx-auto max-w-7xl px-6 py-24 md:py-32">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <SectionLabel tone="paper" number="06">CONTINUE?</SectionLabel>
+      <span class="font-mono text-xs uppercase tracking-widest text-[var(--color-paper)]/70 animate-pulse">
+        ▌ INSERT COIN
+      </span>
+    </div>
+
+    <DisplayHeading as="h2" tone="paper" shadowTone="ink" size="xl" class="mt-6">
+      READY PLAYER 2?
+    </DisplayHeading>
+
+    <p class="mt-6 max-w-2xl text-lg text-[var(--color-paper)]/95">
+      Si tenés un proyecto donde encaje, una idea sin pulir, o solo querés
+      charlar de mapas, antipatrones y cómics — la línea está abierta.
+      Disponibilidad por las noches (zona horaria Lima, GMT-5).
+    </p>
+
+    <div class="mt-10 grid gap-12 lg:grid-cols-[1.3fr_1fr]">
+      <!-- Canales -->
+      <ul class="space-y-4">
+        {
+          channels.map((c) => (
+            <li>
+              <a
+                href={c.href}
+                target={c.href.startsWith("http") ? "_blank" : undefined}
+                rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                class="group flex items-center gap-4 rounded-2xl border-[5px] border-[var(--color-ink)] bg-[var(--color-paper)] text-[var(--color-ink)] px-5 py-4 transition-transform"
+                style="box-shadow: 8px 8px 0 0 var(--color-ink);"
+              >
+                <span class="grid h-12 w-12 place-items-center rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-mustard)] font-display text-xl text-[var(--color-ink)]">
+                  {c.icon}
+                </span>
+                <div class="flex-1">
+                  <p class="font-mono text-[10px] uppercase tracking-widest text-[var(--color-ink)]/60">
+                    {c.label}
+                  </p>
+                  <p class="font-display text-lg leading-tight">{c.value}</p>
+                </div>
+                <span class="font-mono text-xs font-bold uppercase tracking-widest text-[var(--color-tomato)] opacity-0 transition-opacity group-hover:opacity-100">
+                  GO →
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <!-- Mascot placeholder despedida + CTA -->
+      <div class="flex flex-col gap-6">
+        <!-- TODO: reemplazar por <MijiMascot variant="wave-bye" /> -->
+        <div
+          class="grid aspect-square place-items-center rounded-2xl border-[5px] border-dashed border-[var(--color-paper)] bg-[var(--color-paper)]/10"
+        >
+          <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-paper)]/70 text-center px-4">
+            ☐ MIJI · variante "wave-bye"
+          </p>
+        </div>
+
+        <div
+          class="rounded-2xl border-[5px] border-[var(--color-ink)] bg-[var(--color-paper)] text-[var(--color-ink)] p-6"
+          style="box-shadow: 8px 8px 0 0 var(--color-ink);"
+        >
+          <p class="font-display text-lg leading-tight text-[var(--color-cobalt)]">
+            PRESS START
+          </p>
+          <p class="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+            ¿Prefieres ir directo? Mandame un email con el contexto del proyecto.
+          </p>
+          <div class="mt-4">
+            <CartoonButton href={`mailto:${email}`} variant="tomato" size="md">
+              Mandar email →
+            </CartoonButton>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <Decor shape="sparkle" color="mustard" size={50} class="absolute top-16 right-12 hidden md:block rotate-12" />
+  <Decor shape="star" color="paper" size={40} class="absolute bottom-20 left-8 hidden md:block -rotate-6" />
+</section>

@@ -1,0 +1,151 @@
+---
+import type { Project } from "../data/projects";
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+
+const toneBg: Record<Project["cartridgeTone"], string> = {
+  cobalt: "bg-[var(--color-cobalt)] text-[var(--color-paper)]",
+  tomato: "bg-[var(--color-tomato)] text-[var(--color-paper)]",
+  mustard: "bg-[var(--color-mustard)] text-[var(--color-ink)]",
+  pink: "bg-[var(--color-pink)] text-[var(--color-ink)]",
+};
+
+const toneInverse: Record<Project["cartridgeTone"], string> = {
+  cobalt: "bg-[var(--color-paper)] text-[var(--color-ink)]",
+  tomato: "bg-[var(--color-paper)] text-[var(--color-ink)]",
+  mustard: "bg-[var(--color-ink)] text-[var(--color-paper)]",
+  pink: "bg-[var(--color-ink)] text-[var(--color-paper)]",
+};
+---
+
+<article
+  data-cartridge
+  class={`group relative flex flex-col rounded-2xl border-[5px] border-[var(--color-ink)] overflow-hidden ${toneBg[project.cartridgeTone]}`}
+  style="box-shadow: 10px 10px 0 0 var(--color-ink);"
+>
+  <!-- Tag superior estilo cartucho -->
+  <div class={`flex items-center justify-between border-b-[4px] border-[var(--color-ink)] px-5 py-2 ${toneInverse[project.cartridgeTone]}`}>
+    <span class="font-mono text-[10px] font-bold uppercase tracking-widest">
+      {project.context}
+    </span>
+    <span class="font-mono text-[10px] font-bold uppercase tracking-widest opacity-70">
+      {project.period}
+    </span>
+  </div>
+
+  <!-- Screenshot placeholder -->
+  <!-- TODO: reemplazar por <ProjectShot slug={project.slug} /> cuando tenga screenshots reales -->
+  <div
+    class="relative grid aspect-[16/10] place-items-center border-b-[4px] border-[var(--color-ink)] bg-[var(--color-ink)]/15"
+  >
+    <div class="text-center">
+      <p class="font-mono text-xs uppercase tracking-widest opacity-70">
+        ☐ Screenshot
+      </p>
+      <p class="mt-1 font-display text-lg leading-tight">
+        {project.screenshotPlaceholder}
+      </p>
+    </div>
+    {project.highlight && (
+      <span
+        class="absolute -right-2 -top-2 rotate-6 rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-mustard)] px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest text-[var(--color-ink)]"
+        style="box-shadow: 2px 2px 0 0 var(--color-ink);"
+      >
+        ★ Featured
+      </span>
+    )}
+  </div>
+
+  <!-- Body -->
+  <div class="flex flex-1 flex-col gap-4 p-6">
+    <div>
+      <h3 class="font-display text-2xl leading-tight md:text-3xl">
+        {project.title}
+      </h3>
+      <p class="mt-1 font-mono text-xs uppercase tracking-widest opacity-80">
+        {project.subtitle}
+      </p>
+    </div>
+
+    <p class="text-sm leading-relaxed opacity-95">
+      {project.description}
+    </p>
+
+    {project.metrics && (
+      <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
+        {project.metrics.map((m) => (
+          <div class={`rounded-md border-[2px] border-[var(--color-ink)] px-2 py-1.5 ${toneInverse[project.cartridgeTone]}`}>
+            <p class="font-mono text-[9px] uppercase tracking-widest opacity-70">
+              {m.label}
+            </p>
+            <p class="font-display text-base leading-tight">{m.value}</p>
+          </div>
+        ))}
+      </div>
+    )}
+
+    <div class="flex flex-wrap gap-2 pt-2">
+      {project.stack.map((tech) => (
+        <span class={`rounded-full border-[2px] border-[var(--color-ink)] px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest ${toneInverse[project.cartridgeTone]}`}>
+          {tech}
+        </span>
+      ))}
+    </div>
+
+    <div class="mt-auto flex items-center justify-between border-t-[3px] border-dashed border-[var(--color-ink)] pt-3">
+      <span class="font-mono text-[10px] uppercase tracking-widest opacity-75">
+        {project.role}
+      </span>
+      <!-- TODO: link a /proyectos/[slug] cuando existan detail pages -->
+      <span class="font-mono text-[10px] font-bold uppercase tracking-widest opacity-50">
+        DETAILS · soon
+      </span>
+    </div>
+  </div>
+</article>
+
+<script>
+  // D25 — Hover lift + tilt 3D leve en los cartuchos, con spring physics
+  import { animate, hover } from "motion";
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const finePointer = window.matchMedia("(pointer: fine)");
+
+  if (!reducedMotion.matches && finePointer.matches) {
+    const springLift = { type: "spring", stiffness: 300, damping: 22 } as const;
+    const MAX_TILT_DEG = 3;
+
+    for (const card of document.querySelectorAll<HTMLElement>("[data-cartridge]")) {
+      animate(card, { transformPerspective: 900 }, { duration: 0 });
+
+      hover(card, () => {
+        animate(card, { y: -8, boxShadow: "14px 14px 0 0 var(--color-ink)" }, springLift);
+
+        const onMove = (e: PointerEvent) => {
+          const r = card.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width - 0.5;
+          const py = (e.clientY - r.top) / r.height - 0.5;
+          animate(
+            card,
+            { rotateX: -py * MAX_TILT_DEG * 2, rotateY: px * MAX_TILT_DEG * 2 },
+            { duration: 0.2, ease: "easeOut" },
+          );
+        };
+        card.addEventListener("pointermove", onMove, { passive: true });
+
+        return () => {
+          card.removeEventListener("pointermove", onMove);
+          animate(
+            card,
+            { y: 0, rotateX: 0, rotateY: 0, boxShadow: "10px 10px 0 0 var(--color-ink)" },
+            springLift,
+          );
+        };
+      });
+    }
+  }
+</script>

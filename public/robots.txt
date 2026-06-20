@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO(D22/D23): agregar "Sitemap: https://<dominio>/sitemap-index.xml"
+# cuando haya deploy + @astrojs/sitemap configurado con `site`.

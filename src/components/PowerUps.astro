@@ -1,0 +1,118 @@
+---
+import SectionLabel from "./SectionLabel.astro";
+import DisplayHeading from "./DisplayHeading.astro";
+import Decor from "./Decor.astro";
+import SkillIcon from "./SkillIcon.astro";
+import { skillCategories } from "../data/skills";
+---
+
+<section id="skills" class="relative overflow-hidden bg-[var(--color-cobalt)] text-[var(--color-paper)] border-y-[5px] border-[var(--color-ink)]">
+  <div class="mx-auto max-w-7xl px-6 py-24 md:py-32">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <SectionLabel tone="mustard" number="03">POWER-UPS</SectionLabel>
+      <span class="font-mono text-xs uppercase tracking-widest text-[var(--color-paper)]/70">
+        INVENTORY · {skillCategories.reduce((acc, c) => acc + c.skills.length, 0)} ITEMS
+      </span>
+    </div>
+
+    <DisplayHeading as="h2" tone="paper" shadowTone="ink" size="lg" class="mt-6">
+      SKILLS
+    </DisplayHeading>
+
+    <p class="mt-6 max-w-2xl text-lg text-[var(--color-paper)]/90">
+      Cada item es un power-up que vengo usando en proyectos reales.
+      El "lvl" es honestidad de uso, no marketing — main set vs cosas que
+      he tocado lo suficiente para resolverlas.
+    </p>
+
+    <div class="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {
+        skillCategories.map((cat) => (
+          <div
+            data-skill-card
+            class="relative rounded-2xl border-[5px] border-[var(--color-ink)] bg-[var(--color-paper)] text-[var(--color-ink)] p-6"
+            style="box-shadow: 8px 8px 0 0 var(--color-ink);"
+          >
+            <div class="flex items-center justify-between">
+              <span class="grid h-10 w-10 place-items-center rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-mustard)] font-display text-lg">
+                {cat.icon}
+              </span>
+              <span class="font-mono text-[10px] uppercase tracking-widest text-[var(--color-ink)]/60">
+                {cat.subtitle}
+              </span>
+            </div>
+
+            <h3 class="mt-4 font-display text-2xl text-[var(--color-cobalt)]">
+              {cat.title}
+            </h3>
+
+            <ul class="mt-4 space-y-2.5">
+              {cat.skills.map((s) => (
+                <li class="flex items-center gap-3">
+                  <span class="grid h-7 w-7 shrink-0 place-items-center rounded-md border-[2px] border-[var(--color-ink)] bg-[var(--color-paper-deep)] font-mono text-[10px] font-bold">
+                    <SkillIcon slug={s.iconSlug} />
+                  </span>
+                  <span class="flex-1 font-mono text-sm">{s.name}</span>
+                  {/* Level bar */}
+                  <span class="flex gap-0.5" aria-label={`Level ${s.level} of 5`}>
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <span
+                        data-level-cell={i < s.level ? "" : undefined}
+                        class={`block h-3 w-2 border-[1.5px] border-[var(--color-ink)] ${
+                          i < s.level ? "bg-[var(--color-tomato)]" : "bg-[var(--color-paper-deep)]"
+                        }`}
+                      />
+                    ))}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Specialty highlight -->
+    <div
+      class="mt-12 flex flex-wrap items-center gap-4 rounded-2xl border-[5px] border-[var(--color-ink)] bg-[var(--color-mustard)] p-6 text-[var(--color-ink)]"
+      style="box-shadow: 8px 8px 0 0 var(--color-ink);"
+    >
+      <span class="font-mono text-xs font-bold uppercase tracking-widest">⚡ SPECIALTY</span>
+      <p class="flex-1 font-display text-xl leading-tight md:text-2xl">
+        Mapas · Data geográfica · CRMs · Detección de antipatrones e interoperabilidad FE ↔ BE
+      </p>
+    </div>
+  </div>
+
+  <Decor shape="star" color="tomato" size={48} class="absolute top-16 right-10 hidden md:block" />
+  <Decor shape="sparkle" color="mustard" size={36} class="absolute bottom-20 left-8 hidden md:block -rotate-12" />
+</section>
+
+<script>
+  // MI03 — Las level bars se llenan escalonadamente al entrar al viewport.
+  // Sin JS las barras simplemente quedan llenas (estado server-rendered).
+  import { animate, inView, stagger } from "motion";
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  if (!reducedMotion.matches) {
+    for (const card of document.querySelectorAll<HTMLElement>("[data-skill-card]")) {
+      const cells = card.querySelectorAll<HTMLElement>("[data-level-cell]");
+      if (!cells.length) continue;
+      for (const cell of cells) cell.style.transform = "scale(0)";
+
+      const stop = inView(
+        card,
+        () => {
+          animate(
+            cells,
+            { scale: [0, 1] },
+            { delay: stagger(0.025), type: "spring", stiffness: 350, damping: 20 },
+          );
+          stop();
+        },
+        { amount: 0.35 },
+      );
+    }
+  }
+</script>

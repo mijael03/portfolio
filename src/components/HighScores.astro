@@ -1,0 +1,110 @@
+---
+import SectionLabel from "./SectionLabel.astro";
+import DisplayHeading from "./DisplayHeading.astro";
+import Decor from "./Decor.astro";
+import { experience } from "../data/experience";
+
+const topThree = experience.slice(0, 3);
+const rest = experience.slice(3);
+
+const podiumTone = ["mustard", "paper-deep", "tomato"] as const;
+---
+
+<section id="experience" class="relative overflow-hidden bg-[var(--color-paper)] border-t-[5px] border-[var(--color-ink)]">
+  <div class="mx-auto max-w-7xl px-6 py-24 md:py-32">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <SectionLabel tone="tomato" number="04">HIGH SCORES</SectionLabel>
+      <span class="font-mono text-xs uppercase tracking-widest text-[var(--color-ink)]/60">
+        LEADERBOARD · LAST {experience.length} RUNS
+      </span>
+    </div>
+
+    <DisplayHeading as="h2" tone="cobalt" shadowTone="ink" size="lg" class="mt-6">
+      EXPERIENCIA
+    </DisplayHeading>
+
+    <!-- Podio: top 3 -->
+    <div class="mt-14 grid gap-6 md:grid-cols-3">
+      {
+        topThree.map((exp, i) => (
+          <div
+            class={`relative rounded-2xl border-[5px] border-[var(--color-ink)] p-6 ${
+              i === 0
+                ? "md:translate-y-[-12px] bg-[var(--color-mustard)]"
+                : i === 1
+                ? "bg-[var(--color-paper-deep)]"
+                : "md:translate-y-[12px] bg-[var(--color-tomato)] text-[var(--color-paper)]"
+            }`}
+            style="box-shadow: 10px 10px 0 0 var(--color-ink);"
+          >
+            <div class="flex items-center justify-between">
+              <span
+                class="grid h-12 w-12 place-items-center rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-paper)] font-display text-2xl text-[var(--color-ink)]"
+                style="box-shadow: 3px 3px 0 0 var(--color-ink);"
+              >
+                #{exp.rank}
+              </span>
+              {exp.badge && (
+                <span class="font-display text-3xl" aria-hidden="true">
+                  {exp.badge}
+                </span>
+              )}
+            </div>
+
+            <h3 class="mt-4 font-display text-2xl leading-tight">{exp.company}</h3>
+            <p class="font-mono text-xs uppercase tracking-widest opacity-80">
+              {exp.role}
+            </p>
+            <p class="mt-2 font-mono text-[11px] uppercase tracking-widest opacity-70">
+              {exp.period} · {exp.location}
+            </p>
+
+            <ul class="mt-4 space-y-1.5 text-sm leading-snug">
+              {exp.achievements.slice(0, 3).map((a) => (
+                <li class="flex gap-2">
+                  <span class="opacity-60">▸</span>
+                  <span>{a}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Resto del leaderboard -->
+    <div class="mt-12 rounded-2xl border-[5px] border-[var(--color-ink)] bg-[var(--color-paper-deep)] overflow-hidden" style="box-shadow: 10px 10px 0 0 var(--color-ink);">
+      <div class="grid grid-cols-[60px_1fr_auto] items-center gap-4 border-b-[3px] border-[var(--color-ink)] bg-[var(--color-ink)] px-6 py-3 text-[var(--color-paper)]">
+        <span class="font-mono text-[10px] uppercase tracking-widest opacity-70">RANK</span>
+        <span class="font-mono text-[10px] uppercase tracking-widest opacity-70">COMPANY · ROLE</span>
+        <span class="font-mono text-[10px] uppercase tracking-widest opacity-70">PERIOD</span>
+      </div>
+      {
+        rest.map((exp) => (
+          <div class="grid grid-cols-[60px_1fr_auto] items-center gap-4 border-b-[2px] border-dashed border-[var(--color-ink)]/30 px-6 py-4 last:border-b-0">
+            <span class="font-display text-xl text-[var(--color-cobalt)]">#{exp.rank}</span>
+            <div>
+              <p class="font-display text-lg text-[var(--color-ink)]">{exp.company}</p>
+              <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-ink)]/70">
+                {exp.role}
+              </p>
+              <ul class="mt-1.5 space-y-1 text-sm text-[var(--color-ink-soft)]">
+                {exp.achievements.map((a) => (
+                  <li class="flex gap-2 leading-snug">
+                    <span class="opacity-50">·</span>
+                    <span>{a}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <span class="font-mono text-[11px] uppercase tracking-widest text-[var(--color-ink)]/70 whitespace-nowrap">
+              {exp.period}
+            </span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <Decor shape="dot" color="mustard" size={28} class="absolute right-12 bottom-32 hidden md:block" />
+</section>

@@ -1,0 +1,241 @@
+---
+const navItems = [
+  { href: "#about", label: "Player 1" },
+  { href: "#projects", label: "Game Select" },
+  { href: "#skills", label: "Power-Ups" },
+  { href: "#experience", label: "High Scores" },
+  { href: "#contact", label: "Continue?" },
+];
+---
+
+<header class="sticky top-0 z-40 border-b-[3px] border-[var(--color-ink)] bg-[var(--color-paper)]/95 backdrop-blur">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
+    <a href="/" class="flex items-center gap-2">
+      <span class="grid h-9 w-9 place-items-center rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-mustard)] font-display text-xl text-[var(--color-ink)]">
+        M
+      </span>
+      <span class="font-mono text-sm font-bold uppercase tracking-widest text-[var(--color-ink)]">
+        mijael.dev
+      </span>
+    </a>
+
+    <nav class="hidden items-center gap-1 md:flex">
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            class="rounded-md px-3 py-2 font-mono text-xs font-bold uppercase tracking-widest text-[var(--color-ink)] transition-colors hover:bg-[var(--color-mustard)]"
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <button
+        type="button"
+        aria-label="Toggle language"
+        class="flex items-center gap-1 rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-paper)] px-3 py-1.5 font-mono text-xs font-bold uppercase tracking-wider text-[var(--color-ink)] transition-all hover:bg-[var(--color-cobalt)] hover:text-[var(--color-paper)]"
+        style="box-shadow: 3px 3px 0 0 var(--color-ink);"
+        data-toggle="lang"
+      >
+        <span data-lang-current>ES</span>
+        <span class="opacity-50">/</span>
+        <span data-lang-other class="opacity-50">EN</span>
+      </button>
+
+      <button
+        type="button"
+        aria-label="Toggle sound"
+        class="grid h-9 w-9 place-items-center rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-paper)] text-[var(--color-ink)] transition-all hover:bg-[var(--color-tomato)] hover:text-[var(--color-paper)]"
+        style="box-shadow: 3px 3px 0 0 var(--color-ink);"
+        data-toggle="sound"
+        data-sound="off"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M11 5 6 9H2v6h4l5 4z"></path>
+          <line x1="22" y1="9" x2="16" y2="15"></line>
+          <line x1="16" y1="9" x2="22" y2="15"></line>
+        </svg>
+      </button>
+
+      <button
+        type="button"
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-menu-toggle
+        class="grid h-9 w-9 place-items-center rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-paper)] text-[var(--color-ink)] transition-all hover:bg-[var(--color-mustard)] md:hidden"
+        style="box-shadow: 3px 3px 0 0 var(--color-ink);"
+      >
+        <span class="menu-icon" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Menú mobile: dropdown estilo "select stage" -->
+  <div
+    id="mobile-menu"
+    data-menu-panel
+    hidden
+    class="mobile-menu absolute inset-x-0 top-full border-b-[5px] border-[var(--color-ink)] bg-[var(--color-paper)] md:hidden"
+    style="box-shadow: 0 8px 0 0 var(--color-ink);"
+  >
+    <p class="border-b-[2px] border-dashed border-[var(--color-ink)]/30 px-6 pb-2 pt-3 font-mono text-[10px] font-bold uppercase tracking-widest text-[var(--color-ink)]/50">
+      ▼ Select stage
+    </p>
+    <nav>
+      {
+        navItems.map((item, i) => (
+          <a
+            href={item.href}
+            data-menu-link
+            class="menu-link group flex items-center gap-3 border-b-[2px] border-dashed border-[var(--color-ink)]/30 px-6 py-3.5 font-mono text-sm font-bold uppercase tracking-widest text-[var(--color-ink)] transition-colors hover:bg-[var(--color-mustard)] last:border-b-0"
+          >
+            <span class="text-[var(--color-tomato)] opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100" aria-hidden="true">
+              ▶
+            </span>
+            {item.label}
+            <span class="ml-auto text-[10px] text-[var(--color-ink)]/40" aria-hidden="true">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<style>
+  /* Icono hamburguesa: 3 barras que mutan a X (solo transform/opacity) */
+  .menu-icon {
+    display: grid;
+    gap: 3.5px;
+  }
+
+  .menu-icon span {
+    display: block;
+    width: 16px;
+    height: 3px;
+    border-radius: 9999px;
+    background: currentColor;
+    transition:
+      transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+      opacity 0.15s ease;
+  }
+
+  [data-menu-toggle].is-open .menu-icon span:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+
+  [data-menu-toggle].is-open .menu-icon span:nth-child(2) {
+    opacity: 0;
+  }
+
+  [data-menu-toggle].is-open .menu-icon span:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+
+  /* Panel: slide-down + pop-in escalonado de los items */
+  @keyframes menu-panel-in {
+    from {
+      transform: translateY(-10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes menu-item-in {
+    from {
+      transform: translateX(-12px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .mobile-menu[data-open] {
+    animation: menu-panel-in 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  .mobile-menu[data-open] .menu-link {
+    animation: menu-item-in 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  .mobile-menu[data-open] .menu-link:nth-child(2) {
+    animation-delay: 45ms;
+  }
+
+  .mobile-menu[data-open] .menu-link:nth-child(3) {
+    animation-delay: 90ms;
+  }
+
+  .mobile-menu[data-open] .menu-link:nth-child(4) {
+    animation-delay: 135ms;
+  }
+
+  .mobile-menu[data-open] .menu-link:nth-child(5) {
+    animation-delay: 180ms;
+  }
+</style>
+
+<script>
+  // Menú mobile: toggle + cierre por link, Escape, click afuera y resize a desktop
+  const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+  const panel = document.querySelector<HTMLElement>("[data-menu-panel]");
+
+  if (toggle && panel) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+      toggle.classList.toggle("is-open", open);
+      panel.hidden = !open;
+      if (open) panel.setAttribute("data-open", "");
+      else panel.removeAttribute("data-open");
+    };
+
+    toggle.addEventListener("click", () => setOpen(panel.hidden));
+
+    panel.addEventListener("click", (e) => {
+      if (e.target instanceof Element && e.target.closest("[data-menu-link]")) setOpen(false);
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !panel.hidden) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!panel.hidden && e.target instanceof Element && !e.target.closest("header")) {
+        setOpen(false);
+      }
+    });
+
+    window.matchMedia("(min-width: 768px)").addEventListener("change", (m) => {
+      if (m.matches) setOpen(false);
+    });
+  }
+</script>

@@ -1,0 +1,38 @@
+---
+type Tone = "cobalt" | "tomato" | "mustard" | "ink" | "paper";
+
+interface Props {
+  tone?: Tone;
+  number?: string;
+  class?: string;
+}
+
+const { tone = "ink", number, class: className = "" } = Astro.props;
+
+const toneClasses: Record<Tone, string> = {
+  cobalt: "bg-[var(--color-cobalt)] text-[var(--color-paper)]",
+  tomato: "bg-[var(--color-tomato)] text-[var(--color-paper)]",
+  mustard: "bg-[var(--color-mustard)] text-[var(--color-ink)]",
+  ink: "bg-[var(--color-ink)] text-[var(--color-paper)]",
+  paper: "bg-[var(--color-paper)] text-[var(--color-ink)]",
+};
+---
+
+<div class={`inline-flex items-center gap-3 ${className}`}>
+  {
+    number && (
+      <span
+        class="grid h-8 w-8 place-items-center rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-mustard)] font-display text-base text-[var(--color-ink)]"
+        style="box-shadow: 3px 3px 0 0 var(--color-ink);"
+      >
+        {number}
+      </span>
+    )
+  }
+  <span
+    class={`inline-flex items-center rounded-md border-[3px] border-[var(--color-ink)] px-3 py-1.5 font-mono text-xs font-bold uppercase tracking-[0.2em] ${toneClasses[tone]}`}
+    style="box-shadow: 3px 3px 0 0 var(--color-ink);"
+  >
+    <slot />
+  </span>
+</div>

@@ -1,0 +1,119 @@
+---
+import SectionLabel from "./SectionLabel.astro";
+import DisplayHeading from "./DisplayHeading.astro";
+import CartoonButton from "./CartoonButton.astro";
+import Decor from "./Decor.astro";
+import { stats, abilities, hobbies } from "../data/profile";
+---
+
+<section id="about" class="relative overflow-hidden bg-[var(--color-paper)]">
+  <div class="mx-auto max-w-7xl px-6 py-24 md:py-32">
+    <div class="flex items-center justify-between gap-4">
+      <SectionLabel tone="mustard" number="01">PLAYER 1</SectionLabel>
+      <Decor shape="sparkle" color="tomato" size={40} class="hidden md:block" />
+    </div>
+
+    <DisplayHeading as="h2" tone="ink" shadowTone="mustard" size="lg" class="mt-6">
+      SELECT CHARACTER
+    </DisplayHeading>
+
+    <div class="mt-16 grid gap-10 lg:grid-cols-[1.2fr_1fr]">
+      <!-- Stats card -->
+      <div
+        class="relative rounded-2xl border-[5px] border-[var(--color-ink)] bg-[var(--color-paper-deep)] p-8 md:p-10"
+        style="box-shadow: 10px 10px 0 0 var(--color-ink);"
+      >
+        <div class="flex items-baseline justify-between border-b-[3px] border-dashed border-[var(--color-ink)] pb-4">
+          <p class="font-display text-2xl text-[var(--color-cobalt)]">MIJAEL CAMA</p>
+          <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-ink)]/60">CHAR · 001</p>
+        </div>
+
+        <div class="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3">
+          {
+            stats.map((s) => (
+              <div class="rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-paper)] px-3 py-2">
+                <p class="font-mono text-[10px] uppercase tracking-widest text-[var(--color-ink)]/60">
+                  {s.label}
+                </p>
+                <p class="font-display text-lg leading-tight text-[var(--color-ink)]">
+                  {s.value}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="mt-8">
+          <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-tomato)] font-bold">
+            // BIO
+          </p>
+          <p class="mt-2 leading-relaxed text-[var(--color-ink-soft)]">
+            Desarrollador full stack con experiencia en web y móvil, backend,
+            frontend, QA, datos geográficos, mapas y CRMs. Me especializo en
+            identificar fallos, huecos funcionales y antipatrones técnicos
+            que pueden escalar — sobre todo en la interoperabilidad
+            <span class="font-bold text-[var(--color-cobalt)]">frontend ↔ backend</span>
+            — y convertirlos en soluciones estables y sostenibles.
+          </p>
+        </div>
+
+        <div class="mt-6 flex flex-wrap gap-2">
+          {
+            hobbies.map((h) => (
+              <span class="rounded-full border-[2px] border-[var(--color-ink)] bg-[var(--color-pink)] px-3 py-1 font-mono text-xs font-bold uppercase tracking-widest text-[var(--color-ink)]">
+                ♥ {h}
+              </span>
+            ))
+          }
+        </div>
+
+        <div class="mt-8 flex flex-wrap items-center gap-4 border-t-[3px] border-dashed border-[var(--color-ink)] pt-6">
+          <CartoonButton href="/mijael-cama-cv-es.pdf" variant="cobalt" size="sm" download="mijael-cama-cv.pdf">
+            ↓ Descargar CV
+          </CartoonButton>
+          <span class="font-mono text-[10px] uppercase tracking-widest text-[var(--color-ink)]/50">
+            CHARACTER SHEET · PDF · ES
+          </span>
+        </div>
+      </div>
+
+      <!-- Abilities + mascot placeholder -->
+      <div class="flex flex-col gap-6">
+        <div
+          class="rounded-2xl border-[5px] border-[var(--color-ink)] bg-[var(--color-mustard)] p-6"
+          style="box-shadow: 10px 10px 0 0 var(--color-ink);"
+        >
+          <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-ink)] font-bold">
+            ABILITIES UNLOCKED
+          </p>
+          <ul class="mt-3 space-y-2">
+            {
+              abilities.map((a, i) => (
+                <li class="flex items-start gap-3 leading-snug text-[var(--color-ink)]">
+                  <span class="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-sm border-[2px] border-[var(--color-ink)] bg-[var(--color-paper)] font-mono text-[10px] font-bold">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span>{a}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <!-- PLACEHOLDER: MASCOTA secundaria (variante "thinking" o "wave") -->
+        <!-- TODO: reemplazar por <MijiMascot variant="thinking" /> cuando esté el SVG -->
+        <div
+          class="grid h-48 place-items-center rounded-2xl border-[5px] border-dashed border-[var(--color-ink)] bg-[var(--color-pink)]/30"
+        >
+          <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-ink)]/60">
+            ☐ MIJI · variante "thinking"
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- decor -->
+  <Decor shape="star" color="cobalt" size={60} class="absolute right-8 top-32 hidden lg:block -rotate-12" />
+  <Decor shape="dot" color="tomato" size={28} class="absolute bottom-16 left-12 hidden md:block" />
+</section>

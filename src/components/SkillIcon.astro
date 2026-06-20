@@ -1,0 +1,82 @@
+---
+// D24 — Ícono de stack inline desde Simple Icons (cierra F05 sin Figma).
+// Mapea los iconSlug estilo devicon de data/skills.ts a íconos reales.
+// Se renderiza en build (cero JS al cliente); hereda color via currentColor.
+import {
+  siTypescript,
+  siPython,
+  siDart,
+  siKotlin,
+  siPostgresql,
+  siNextdotjs,
+  siReact,
+  siFlutter,
+  siAndroid,
+  siSwift,
+  siAngular,
+  siFastapi,
+  siDjango,
+  siNodedotjs,
+  siNestjs,
+  siExpress,
+  siMongodb,
+  siRedis,
+  siMysql,
+  siPrisma,
+  siDocker,
+  siVercel,
+  siGoogle,
+  type SimpleIcon,
+} from "simple-icons";
+
+interface Props {
+  slug?: string;
+  size?: number;
+}
+
+const { slug, size = 15 } = Astro.props;
+
+const bySlug: Record<string, SimpleIcon> = {
+  typescript: siTypescript,
+  python: siPython,
+  dart: siDart,
+  kotlin: siKotlin,
+  postgresql: siPostgresql,
+  nextjs: siNextdotjs,
+  react: siReact,
+  flutter: siFlutter,
+  android: siAndroid,
+  swift: siSwift,
+  angularjs: siAngular,
+  fastapi: siFastapi,
+  django: siDjango,
+  nodejs: siNodedotjs,
+  nestjs: siNestjs,
+  express: siExpress,
+  mongodb: siMongodb,
+  redis: siRedis,
+  mysql: siMysql,
+  prisma: siPrisma,
+  docker: siDocker,
+  vercel: siVercel,
+  google: siGoogle,
+};
+
+const icon = slug ? bySlug[slug] : undefined;
+---
+
+{
+  icon ? (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path d={icon.path} fill="currentColor"></path>
+    </svg>
+  ) : (
+    <span aria-hidden="true">□</span>
+  )
+}

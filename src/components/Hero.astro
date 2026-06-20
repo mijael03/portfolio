@@ -1,0 +1,103 @@
+---
+import DisplayHeading from "./DisplayHeading.astro";
+import CartoonButton from "./CartoonButton.astro";
+import MijiMascot from "./MijiMascot.astro";
+---
+
+<section class="relative overflow-hidden">
+  <div class="mx-auto grid max-w-7xl items-center gap-12 px-6 py-20 md:grid-cols-[1.2fr_1fr] md:py-28">
+    <div>
+      <p class="mb-4 inline-flex items-center gap-2 rounded-full border-[3px] border-[var(--color-ink)] bg-[var(--color-mustard)] px-4 py-1 font-mono text-xs font-bold uppercase tracking-widest text-[var(--color-ink)]">
+        <span class="h-2 w-2 rounded-full bg-[var(--color-tomato)]"></span>
+        Available for work · Press start
+      </p>
+
+      <DisplayHeading as="h1" tone="cobalt" shadowTone="ink" size="xl">
+        MIJAEL CAMA
+      </DisplayHeading>
+
+      <p class="mt-6 max-w-xl text-lg md:text-xl leading-relaxed text-[var(--color-ink-soft)]">
+        <span class="font-bold text-[var(--color-tomato)]">Full Stack Developer</span>
+        especializado en mapas, geodata y CRMs. Identifico antipatrones y huecos
+        funcionales antes de que escalen — luego los convierto en soluciones
+        estables, optimizadas y sostenibles.
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-4">
+        <CartoonButton href="#projects" variant="tomato" size="lg">
+          Ver proyectos →
+        </CartoonButton>
+        <CartoonButton href="#contact" variant="ink" size="lg">
+          Contactarme
+        </CartoonButton>
+      </div>
+
+      <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-xs uppercase tracking-widest text-[var(--color-ink)]/70">
+        <span>📍 Lima, Perú</span>
+        <span>·</span>
+        <span>Next · FastAPI · Flutter</span>
+        <span>·</span>
+        <span>+4 años en producción</span>
+      </div>
+    </div>
+
+    <div class="relative mx-auto w-full max-w-md md:max-w-none">
+      <MijiMascot variant="wave" />
+    </div>
+  </div>
+
+  <!-- decorative squiggles -->
+  <svg
+    class="hero-squiggle pointer-events-none absolute -left-6 top-10 hidden md:block"
+    width="80"
+    height="40"
+    viewBox="0 0 80 40"
+    fill="none"
+    aria-hidden="true"
+  >
+    <path
+      d="M 4 20 Q 14 4, 24 20 T 44 20 T 64 20 T 84 20"
+      stroke="var(--color-tomato)"
+      stroke-width="4"
+      stroke-linecap="round"
+      fill="none"
+    ></path>
+  </svg>
+  <svg
+    class="hero-star pointer-events-none absolute right-8 bottom-20 hidden md:block"
+    width="40"
+    height="40"
+    viewBox="0 0 40 40"
+    fill="none"
+    aria-hidden="true"
+  >
+    <path
+      d="M 20 4 L 24 16 L 36 20 L 24 24 L 20 36 L 16 24 L 4 20 L 16 16 Z"
+      fill="var(--color-mustard)"
+      stroke="var(--color-ink)"
+      stroke-width="3"
+      stroke-linejoin="round"
+    ></path>
+  </svg>
+</section>
+
+<style>
+  /* MI04 — drift sutil de las decoraciones (reduced-motion lo apaga global) */
+  @keyframes hero-drift {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-7px) rotate(4deg);
+    }
+  }
+
+  .hero-squiggle {
+    animation: hero-drift 5.5s ease-in-out infinite;
+  }
+
+  .hero-star {
+    animation: hero-drift 7s ease-in-out infinite reverse;
+  }
+</style>

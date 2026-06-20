@@ -1,0 +1,50 @@
+---
+type Tone = "cobalt" | "tomato" | "mustard" | "paper" | "ink";
+
+interface Props {
+  as?: "h1" | "h2" | "h3";
+  tone?: Tone;
+  shadowTone?: Tone;
+  size?: "xl" | "lg" | "md" | "sm";
+  class?: string;
+}
+
+const {
+  as: Tag = "h1",
+  tone = "cobalt",
+  shadowTone = "ink",
+  size = "xl",
+  class: className = "",
+} = Astro.props;
+
+const toneVar: Record<Tone, string> = {
+  cobalt: "var(--color-cobalt)",
+  tomato: "var(--color-tomato)",
+  mustard: "var(--color-mustard)",
+  paper: "var(--color-paper)",
+  ink: "var(--color-ink)",
+};
+
+const sizeClass: Record<NonNullable<Props["size"]>, string> = {
+  xl: "text-6xl md:text-8xl lg:text-9xl leading-[0.95]",
+  lg: "text-5xl md:text-7xl leading-[0.95]",
+  md: "text-4xl md:text-5xl leading-[1]",
+  sm: "text-3xl md:text-4xl leading-[1]",
+};
+
+// 3D extruded shadow: stack identical-offset shadows in the "shadow" tone
+// to simulate solid depth, plus a final harder offset for the drop.
+const shadowColor = toneVar[shadowTone];
+const stack = Array.from({ length: 8 }, (_, i) => {
+  const n = i + 1;
+  return `${n}px ${n}px 0 ${shadowColor}`;
+}).join(", ");
+const dropShadow = `, 10px 10px 0 rgba(0, 0, 0, 0.18)`;
+---
+
+<Tag
+  class={`font-display tracking-tight ${sizeClass[size]} ${className}`}
+  style={`color:${toneVar[tone]}; text-shadow:${stack}${dropShadow}; -webkit-text-stroke: 2px ${toneVar[shadowTone]};`}
+>
+  <slot />
+</Tag>
