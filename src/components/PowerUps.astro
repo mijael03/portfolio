@@ -58,7 +58,7 @@ const skillCategories = getSkillCategories(locale);
                   </span>
                   <span class="flex-1 font-mono text-sm">{s.name}</span>
                   {/* Level bar */}
-                  <span class="flex gap-0.5" aria-label={ui.powerUps.levelAria(s.level)}>
+                  <span class="flex gap-0.5" role="img" aria-label={ui.powerUps.levelAria(s.level)}>
                     {Array.from({ length: 5 }, (_, i) => (
                       <span
                         data-level-cell={i < s.level ? "" : undefined}

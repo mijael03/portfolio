@@ -6,6 +6,8 @@ import HalftoneOverlay from "../components/HalftoneOverlay.astro";
 import SoundEngine from "../components/SoundEngine.astro";
 import { toLocale } from "../i18n/config";
 import { useUI } from "../i18n/ui";
+// woff2 de la fuente display (heading LCP) para precargarla con su URL hasheada.
+import bagelFontUrl from "@fontsource/bagel-fat-one/files/bagel-fat-one-latin-400-normal.woff2?url";
 
 interface Props {
   title?: string;
@@ -20,23 +22,25 @@ const { title = ui.meta.title, description = ui.meta.description } = Astro.props
 // Canonical + og:url sólo cuando haya dominio: setear `site` en astro.config.mjs.
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 
-// hreflang: ruta por locale (ES en "/", EN en "/en/"). Absoluta si hay `site`.
-const pathForLocale = (l: "es" | "en") => (l === "es" ? "/" : "/en/");
-const hrefFor = (l: "es" | "en") =>
-  Astro.site ? new URL(pathForLocale(l), Astro.site).href : pathForLocale(l);
-
-// og:image necesita URL absoluta. Si no hay `site`, usamos el dominio que Vercel
-// inyecta en build (VERCEL_PROJECT_PRODUCTION_URL).
+// og:image y hreflang necesitan URL absoluta. Si no hay `site`, usamos el
+// dominio que Vercel inyecta en build (VERCEL_PROJECT_PRODUCTION_URL).
 const vercelHost =
   import.meta.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_PROJECT_PRODUCTION_URL;
 const prodOrigin = Astro.site?.origin ?? (vercelHost ? `https://${vercelHost}` : undefined);
 const ogImage = `${prodOrigin ?? ""}/og-image.png`;
+
+// hreflang: la spec exige URLs absolutas. Sólo se emiten cuando hay dominio;
+// en local (sin dominio) se omiten para no dejar hreflang inválido.
+const pathForLocale = (l: "es" | "en") => (l === "es" ? "/" : "/en/");
+const hreflangHref = (l: "es" | "en") =>
+  prodOrigin ? new URL(pathForLocale(l), prodOrigin).href : undefined;
 ---
 
 <!doctype html>
 <html lang={locale}>
   <head>
     <meta charset="utf-8" />
+    <link rel="preload" href={bagelFontUrl} as="font" type="font/woff2" crossorigin />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -47,10 +51,14 @@ const ogImage = `${prodOrigin ?? ""}/og-image.png`;
     <meta name="theme-color" content="#f5f1e8" />
     {canonical && <link rel="canonical" href={canonical} />}
 
-    <!-- hreflang: variantes por idioma -->
-    <link rel="alternate" hreflang="es" href={hrefFor("es")} />
-    <link rel="alternate" hreflang="en" href={hrefFor("en")} />
-    <link rel="alternate" hreflang="x-default" href={hrefFor("es")} />
+    <!-- hreflang: variantes por idioma (sólo con dominio → URLs absolutas) -->
+    {prodOrigin && (
+      <>
+        <link rel="alternate" hreflang="es" href={hreflangHref("es")} />
+        <link rel="alternate" hreflang="en" href={hreflangHref("en")} />
+        <link rel="alternate" hreflang="x-default" href={hreflangHref("es")} />
+      </>
+    )}
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />

@@ -46,7 +46,7 @@ export function getProjects(locale: Locale): Project[] {
       period: t(locale, "Abr 2025 — Actualidad", "Apr 2025 — Present"),
       highlight: true,
       cartridgeTone: "cobalt",
-      screenshot: "/projects/depromine.png",
+      screenshot: "/projects/depromine.webp",
       screenshotAlt: t(
         locale,
         "Dashboard de analítica del LMS Depromine: KPIs de ventas, certificación y engagement con gráfico de ingresos en el tiempo",
@@ -75,7 +75,7 @@ export function getProjects(locale: Locale): Project[] {
       ),
       period: t(locale, "Ago 2025 — Actualidad", "Aug 2025 — Present"),
       cartridgeTone: "tomato",
-      screenshot: "/projects/zefiron.png",
+      screenshot: "/projects/zefiron.webp",
       screenshotAlt: t(
         locale,
         "Dashboard del CRM Zefiron: leads recibidos, tasa de conversión, leads limpios y ventas cerradas con gráficos por proyecto",

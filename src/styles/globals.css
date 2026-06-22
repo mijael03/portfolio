@@ -1,10 +1,14 @@
 @import "tailwindcss";
 
-@import "@fontsource/bagel-fat-one/400.css";
+/* Fuentes: SOLO subset latin (cubre ES/EN). Bagel Fat One trae ~100 subsets
+   japoneses por defecto → importar latin-400 recorta el CSS render-blocking
+   de ~160KB a una fracción. DM Sans variable solo tiene latin/latin-ext
+   (footprint chico), se deja como está. */
+@import "@fontsource/bagel-fat-one/latin-400.css";
 @import "@fontsource-variable/dm-sans";
-@import "@fontsource/ibm-plex-mono/400.css";
-@import "@fontsource/ibm-plex-mono/500.css";
-@import "@fontsource/ibm-plex-mono/700.css";
+@import "@fontsource/ibm-plex-mono/latin-400.css";
+@import "@fontsource/ibm-plex-mono/latin-500.css";
+@import "@fontsource/ibm-plex-mono/latin-700.css";
 
 @theme {
   --color-paper: #f5f1e8;

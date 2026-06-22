@@ -37,7 +37,7 @@ const otherHref = other === "es" ? "/" : "/en/";
     <div class="flex items-center gap-2">
       <a
         href={otherHref}
-        aria-label={ui.a11y.toggleLang}
+        aria-label={`${locale.toUpperCase()} / ${other.toUpperCase()} — ${ui.a11y.toggleLang}`}
         class="flex items-center gap-1 rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-paper)] px-3 py-1.5 font-mono text-xs font-bold uppercase tracking-wider text-[var(--color-ink)] transition-all hover:bg-[var(--color-cobalt)] hover:text-[var(--color-paper)]"
         style="box-shadow: 3px 3px 0 0 var(--color-ink);"
         data-sfx="click"
