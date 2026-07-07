@@ -12,10 +12,16 @@ const otherHref = other === "es" ? "/" : "/en/";
 
 <header class="sticky top-0 z-40 border-b-[3px] border-[var(--color-ink)] bg-[var(--color-paper)]/95 backdrop-blur">
   <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
-    <a href="/" class="flex items-center gap-2">
-      <span class="grid h-9 w-9 place-items-center rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-mustard)] font-display text-xl text-[var(--color-ink)]">
-        M
-      </span>
+    <a href="/" class="flex items-center gap-2" aria-label="mijael.dev">
+      <img
+        src="/favicon.ico"
+        alt=""
+        width="36"
+        height="36"
+        class="h-9 w-9 object-contain"
+        decoding="async"
+        aria-hidden="true"
+      />
       <span class="font-mono text-sm font-bold uppercase tracking-widest text-[var(--color-ink)]">
         mijael.dev
       </span>
