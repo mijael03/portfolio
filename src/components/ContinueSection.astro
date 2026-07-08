@@ -13,20 +13,20 @@ const ui = useUI(locale);
 const channels = getChannels(locale);
 ---
 
-<section id="contact" class="relative overflow-hidden bg-[var(--color-tomato)] text-[var(--color-paper)] border-t-[5px] border-[var(--color-ink)]">
+<section id="contact" class="relative overflow-hidden bg-tomato text-paper border-t-[5px] border-ink">
   <div class="mx-auto max-w-7xl px-6 py-24 md:py-32">
     <div class="flex flex-wrap items-center justify-between gap-4">
-      <SectionLabel tone="paper" number="06">CONTINUE?</SectionLabel>
-      <span class="font-mono text-xs uppercase tracking-widest text-[var(--color-paper)]/70 animate-pulse">
+      <SectionLabel tone="paper" number="07" subtitle={ui.continue.subtitle} subtitleTone="paper">{ui.continue.label}</SectionLabel>
+      <span class="font-mono text-xs uppercase tracking-widest text-paper/70 animate-pulse">
         {ui.continue.insertCoin}
       </span>
     </div>
 
-    <DisplayHeading as="h2" tone="paper" shadowTone="ink" size="xl" class="mt-6">
+    <DisplayHeading as="h2" tone="paper" shadowTone="ink" size="lg" class="mt-6">
       {ui.continue.heading}
     </DisplayHeading>
 
-    <p class="mt-6 max-w-2xl text-lg text-[var(--color-paper)]/95">
+    <p class="mt-6 max-w-2xl text-lg text-paper/95">
       {ui.continue.intro}
     </p>
 
@@ -40,19 +40,19 @@ const channels = getChannels(locale);
                 href={c.href}
                 target={c.href.startsWith("http") ? "_blank" : undefined}
                 rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                class="group flex items-center gap-4 rounded-2xl border-[5px] border-[var(--color-ink)] bg-[var(--color-paper)] text-[var(--color-ink)] px-5 py-4 transition-transform"
+                class="group flex items-center gap-4 rounded-2xl border-[5px] border-ink bg-paper text-ink px-5 py-4 transition-transform"
                 style="box-shadow: 8px 8px 0 0 var(--color-ink);"
               >
-                <span class="grid h-12 w-12 place-items-center rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-mustard)] font-display text-xl text-[var(--color-ink)]">
+                <span class="grid h-12 w-12 place-items-center rounded-md border-[3px] border-ink bg-mustard font-display text-xl text-ink">
                   {c.icon}
                 </span>
                 <div class="flex-1">
-                  <p class="font-mono text-[10px] uppercase tracking-widest text-[var(--color-ink)]/60">
+                  <p class="font-mono text-[10px] uppercase tracking-widest text-ink/60">
                     {c.label}
                   </p>
                   <p class="font-display text-lg leading-tight">{c.value}</p>
                 </div>
-                <span class="font-mono text-xs font-bold uppercase tracking-widest text-[var(--color-tomato)] opacity-0 transition-opacity group-hover:opacity-100">
+                <span class="font-mono text-xs font-bold uppercase tracking-widest text-tomato opacity-0 transition-opacity group-hover:opacity-100">
                   GO →
                 </span>
               </a>
@@ -65,19 +65,19 @@ const channels = getChannels(locale);
       <div class="flex flex-col gap-6">
         <!-- MIJI · variante "bye" -->
         <div
-          class="grid place-items-center rounded-2xl border-[5px] border-[var(--color-paper)] bg-[var(--color-paper)]/10 p-6"
+          class="grid place-items-center rounded-2xl border-[5px] border-paper bg-paper/10 p-6"
         >
           <MijiMascot variant="bye" class="max-w-[260px]" />
         </div>
 
         <div
-          class="rounded-2xl border-[5px] border-[var(--color-ink)] bg-[var(--color-paper)] text-[var(--color-ink)] p-6"
+          class="rounded-2xl border-[5px] border-ink bg-paper text-ink p-6"
           style="box-shadow: 8px 8px 0 0 var(--color-ink);"
         >
-          <p class="font-display text-lg leading-tight text-[var(--color-cobalt)]">
+          <p class="font-display text-lg leading-tight text-cobalt">
             {ui.continue.pressStart}
           </p>
-          <p class="mt-2 text-sm leading-relaxed text-[var(--color-ink-soft)]">
+          <p class="mt-2 text-sm leading-relaxed text-ink-soft">
             {ui.continue.pressStartBody}
           </p>
           <div class="mt-4">

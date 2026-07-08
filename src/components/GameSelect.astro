@@ -12,11 +12,11 @@ const ui = useUI(locale);
 const projects = getProjects(locale);
 ---
 
-<section id="projects" class="relative overflow-hidden bg-[var(--color-paper)] border-t-[5px] border-[var(--color-ink)]">
+<section id="projects" class="relative overflow-hidden bg-paper border-t-[5px] border-ink">
   <div class="mx-auto max-w-7xl px-6 py-24 md:py-32">
     <div class="flex flex-wrap items-center justify-between gap-4">
-      <SectionLabel tone="cobalt" number="02">GAME SELECT</SectionLabel>
-      <span class="font-mono text-xs uppercase tracking-widest text-[var(--color-ink)]/60">
+      <SectionLabel tone="cobalt" number="02" subtitle={ui.gameSelect.subtitle}>{ui.gameSelect.label}</SectionLabel>
+      <span class="font-mono text-xs uppercase tracking-widest text-ink/60">
         {ui.gameSelect.cartridges(projects.length)}
       </span>
     </div>
@@ -25,7 +25,7 @@ const projects = getProjects(locale);
       {ui.gameSelect.heading}
     </DisplayHeading>
 
-    <p class="mt-6 max-w-2xl text-lg text-[var(--color-ink-soft)]">
+    <p class="mt-6 max-w-2xl text-lg text-ink-soft">
       {ui.gameSelect.intro}
     </p>
 

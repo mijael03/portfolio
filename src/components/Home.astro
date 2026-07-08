@@ -2,18 +2,22 @@
 // Stack de secciones de la home. Compartido por la versión ES (/) y EN (/en/).
 // Cada sección lee su copy/datos según Astro.currentLocale.
 import Hero from "./Hero.astro";
+import StatsHud from "./StatsHud.astro";
 import PlayerOne from "./PlayerOne.astro";
+import BuildMode from "./BuildMode.astro";
 import GameSelect from "./GameSelect.astro";
 import PowerUps from "./PowerUps.astro";
+import Services from "./Services.astro";
 import HighScores from "./HighScores.astro";
-import WorldMap from "./WorldMap.astro";
 import ContinueSection from "./ContinueSection.astro";
 ---
 
 <Hero />
+<StatsHud />
 <PlayerOne />
 <GameSelect />
+<BuildMode />
 <PowerUps />
+<Services />
 <HighScores />
-<WorldMap />
 <ContinueSection />

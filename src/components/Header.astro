@@ -10,7 +10,7 @@ const other = otherLocale(locale);
 const otherHref = other === "es" ? "/" : "/en/";
 ---
 
-<header class="sticky top-0 z-40 border-b-[3px] border-[var(--color-ink)] bg-[var(--color-paper)]/95 backdrop-blur">
+<header class="sticky top-0 z-40 border-b-[3px] border-ink bg-paper/95 backdrop-blur">
   <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
     <a href="/" class="flex items-center gap-2" aria-label="mijael.dev">
       <img
@@ -22,7 +22,7 @@ const otherHref = other === "es" ? "/" : "/en/";
         decoding="async"
         aria-hidden="true"
       />
-      <span class="font-mono text-sm font-bold uppercase tracking-widest text-[var(--color-ink)]">
+      <span class="font-mono text-sm font-bold uppercase tracking-widest text-ink">
         mijael.dev
       </span>
     </a>
@@ -32,7 +32,7 @@ const otherHref = other === "es" ? "/" : "/en/";
         navItems.map((item) => (
           <a
             href={item.href}
-            class="rounded-md px-3 py-2 font-mono text-xs font-bold uppercase tracking-widest text-[var(--color-ink)] transition-colors hover:bg-[var(--color-mustard)]"
+            class="rounded-md px-3 py-2 font-mono text-xs font-bold uppercase tracking-widest text-ink transition-colors hover:bg-mustard"
           >
             {item.label}
           </a>
@@ -44,7 +44,7 @@ const otherHref = other === "es" ? "/" : "/en/";
       <a
         href={otherHref}
         aria-label={`${locale.toUpperCase()} / ${other.toUpperCase()} — ${ui.a11y.toggleLang}`}
-        class="flex items-center gap-1 rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-paper)] px-3 py-1.5 font-mono text-xs font-bold uppercase tracking-wider text-[var(--color-ink)] transition-all hover:bg-[var(--color-cobalt)] hover:text-[var(--color-paper)]"
+        class="flex items-center gap-1 rounded-md border-[3px] border-ink bg-paper px-3 py-1.5 font-mono text-xs font-bold uppercase tracking-wider text-ink transition-all hover:bg-cobalt hover:text-paper"
         style="box-shadow: 3px 3px 0 0 var(--color-ink);"
         data-sfx="click"
       >
@@ -56,7 +56,7 @@ const otherHref = other === "es" ? "/" : "/en/";
       <button
         type="button"
         aria-label={ui.a11y.toggleSound}
-        class="grid h-9 w-9 place-items-center rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-paper)] text-[var(--color-ink)] transition-all hover:bg-[var(--color-tomato)] hover:text-[var(--color-paper)]"
+        class="grid h-9 w-9 place-items-center rounded-md border-[3px] border-ink bg-paper text-ink transition-all hover:bg-tomato hover:text-paper"
         style="box-shadow: 3px 3px 0 0 var(--color-ink);"
         data-toggle="sound"
         data-sound="off"
@@ -107,7 +107,7 @@ const otherHref = other === "es" ? "/" : "/en/";
         aria-expanded="false"
         aria-controls="mobile-menu"
         data-menu-toggle
-        class="grid h-9 w-9 place-items-center rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-paper)] text-[var(--color-ink)] transition-all hover:bg-[var(--color-mustard)] md:hidden"
+        class="grid h-9 w-9 place-items-center rounded-md border-[3px] border-ink bg-paper text-ink transition-all hover:bg-mustard md:hidden"
         style="box-shadow: 3px 3px 0 0 var(--color-ink);"
       >
         <span class="menu-icon" aria-hidden="true">
@@ -124,10 +124,10 @@ const otherHref = other === "es" ? "/" : "/en/";
     id="mobile-menu"
     data-menu-panel
     hidden
-    class="mobile-menu absolute inset-x-0 top-full border-b-[5px] border-[var(--color-ink)] bg-[var(--color-paper)] md:hidden"
+    class="mobile-menu absolute inset-x-0 top-full border-b-[5px] border-ink bg-paper md:hidden"
     style="box-shadow: 0 8px 0 0 var(--color-ink);"
   >
-    <p class="border-b-[2px] border-dashed border-[var(--color-ink)]/30 px-6 pb-2 pt-3 font-mono text-[10px] font-bold uppercase tracking-widest text-[var(--color-ink)]/50">
+    <p class="border-b-2 border-dashed border-ink/30 px-6 pb-2 pt-3 font-mono text-[10px] font-bold uppercase tracking-widest text-ink/50">
       {ui.nav.selectStage}
     </p>
     <nav>
@@ -136,13 +136,13 @@ const otherHref = other === "es" ? "/" : "/en/";
           <a
             href={item.href}
             data-menu-link
-            class="menu-link group flex items-center gap-3 border-b-[2px] border-dashed border-[var(--color-ink)]/30 px-6 py-3.5 font-mono text-sm font-bold uppercase tracking-widest text-[var(--color-ink)] transition-colors hover:bg-[var(--color-mustard)] last:border-b-0"
+            class="menu-link group flex items-center gap-3 border-b-2 border-dashed border-ink/30 px-6 py-3.5 font-mono text-sm font-bold uppercase tracking-widest text-ink transition-colors hover:bg-mustard last:border-b-0"
           >
-            <span class="text-[var(--color-tomato)] opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100" aria-hidden="true">
+            <span class="text-tomato opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100" aria-hidden="true">
               ▶
             </span>
             {item.label}
-            <span class="ml-auto text-[10px] text-[var(--color-ink)]/40" aria-hidden="true">
+            <span class="ml-auto text-[10px] text-ink/40" aria-hidden="true">
               {String(i + 1).padStart(2, "0")}
             </span>
           </a>
@@ -259,7 +259,7 @@ const otherHref = other === "es" ? "/" : "/en/";
       else panel.removeAttribute("data-open");
     };
 
-    toggle.addEventListener("click", () => setOpen(panel.hidden));
+    toggle.addEventListener("click", () => setOpen(Boolean(panel.hidden)));
 
     panel.addEventListener("click", (e) => {
       if (e.target instanceof Element && e.target.closest("[data-menu-link]")) setOpen(false);

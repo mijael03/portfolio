@@ -4,7 +4,7 @@ import DisplayHeading from "./DisplayHeading.astro";
 import CartoonButton from "./CartoonButton.astro";
 import Decor from "./Decor.astro";
 import MijiMascot from "./MijiMascot.astro";
-import { getStats, getAbilities, getHobbies } from "../data/profile";
+import { getStats, getAbilities } from "../data/profile";
 import { toLocale } from "../i18n/config";
 import { useUI } from "../i18n/ui";
 
@@ -12,13 +12,12 @@ const locale = toLocale(Astro.currentLocale);
 const ui = useUI(locale);
 const stats = getStats(locale);
 const abilities = getAbilities(locale);
-const hobbies = getHobbies(locale);
 ---
 
-<section id="about" class="relative overflow-hidden bg-[var(--color-paper)]">
+<section id="about" class="relative overflow-hidden bg-paper">
   <div class="mx-auto max-w-7xl px-6 py-24 md:py-32">
     <div class="flex items-center justify-between gap-4">
-      <SectionLabel tone="mustard" number="01">PLAYER 1</SectionLabel>
+      <SectionLabel tone="mustard" number="01" subtitle={ui.playerOne.subtitle}>{ui.playerOne.label}</SectionLabel>
       <Decor shape="sparkle" color="tomato" size={40} class="hidden md:block" />
     </div>
 
@@ -29,22 +28,22 @@ const hobbies = getHobbies(locale);
     <div class="mt-16 grid gap-10 lg:grid-cols-[1.2fr_1fr]">
       <!-- Stats card -->
       <div
-        class="relative rounded-2xl border-[5px] border-[var(--color-ink)] bg-[var(--color-paper-deep)] p-8 md:p-10"
+        class="relative rounded-2xl border-[5px] border-ink bg-paper-deep p-8 md:p-10"
         style="box-shadow: 10px 10px 0 0 var(--color-ink);"
       >
-        <div class="flex items-baseline justify-between border-b-[3px] border-dashed border-[var(--color-ink)] pb-4">
-          <p class="font-display text-2xl text-[var(--color-cobalt)]">MIJAEL CAMA</p>
-          <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-ink)]/60">CHAR · 001</p>
+        <div class="flex items-baseline justify-between border-b-[3px] border-dashed border-ink pb-4">
+          <p class="font-display text-2xl text-cobalt">MIJAEL CAMA</p>
+          <p class="font-mono text-xs uppercase tracking-widest text-ink/60">CHAR · 001</p>
         </div>
 
         <div class="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3">
           {
             stats.map((s) => (
-              <div class="rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-paper)] px-3 py-2">
-                <p class="font-mono text-[10px] uppercase tracking-widest text-[var(--color-ink)]/60">
+              <div class="rounded-md border-[3px] border-ink bg-paper px-3 py-2">
+                <p class="font-mono text-[10px] uppercase tracking-widest text-ink/60">
                   {s.label}
                 </p>
-                <p class="font-display text-lg leading-tight text-[var(--color-ink)]">
+                <p class="font-display text-lg leading-tight text-ink">
                   {s.value}
                 </p>
               </div>
@@ -53,27 +52,17 @@ const hobbies = getHobbies(locale);
         </div>
 
         <div class="mt-8">
-          <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-tomato)] font-bold">
+          <p class="font-mono text-xs uppercase tracking-widest text-tomato font-bold">
             {ui.playerOne.bioLabel}
           </p>
-          <p class="mt-2 leading-relaxed text-[var(--color-ink-soft)]" set:html={ui.playerOne.bioHtml} />
+          <p class="mt-2 leading-relaxed text-ink-soft" set:html={ui.playerOne.bioHtml} />
         </div>
 
-        <div class="mt-6 flex flex-wrap gap-2">
-          {
-            hobbies.map((h) => (
-              <span class="rounded-full border-[2px] border-[var(--color-ink)] bg-[var(--color-pink)] px-3 py-1 font-mono text-xs font-bold uppercase tracking-widest text-[var(--color-ink)]">
-                ♥ {h}
-              </span>
-            ))
-          }
-        </div>
-
-        <div class="mt-8 flex flex-wrap items-center gap-4 border-t-[3px] border-dashed border-[var(--color-ink)] pt-6">
+        <div class="mt-8 flex flex-wrap items-center gap-4 border-t-[3px] border-dashed border-ink pt-6">
           <CartoonButton href={ui.playerOne.cvHref} variant="cobalt" size="sm" download={ui.playerOne.cvDownload} data-sfx="success">
             {ui.playerOne.cvButton}
           </CartoonButton>
-          <span class="font-mono text-[10px] uppercase tracking-widest text-[var(--color-ink)]/50">
+          <span class="font-mono text-[10px] uppercase tracking-widest text-ink/50">
             {ui.playerOne.cvMeta}
           </span>
         </div>
@@ -82,17 +71,17 @@ const hobbies = getHobbies(locale);
       <!-- Abilities + mascot placeholder -->
       <div class="flex flex-col gap-6">
         <div
-          class="rounded-2xl border-[5px] border-[var(--color-ink)] bg-[var(--color-mustard)] p-6"
+          class="rounded-2xl border-[5px] border-ink bg-mustard p-6"
           style="box-shadow: 10px 10px 0 0 var(--color-ink);"
         >
-          <p class="font-mono text-xs uppercase tracking-widest text-[var(--color-ink)] font-bold">
+          <p class="font-mono text-xs uppercase tracking-widest text-ink font-bold">
             ABILITIES UNLOCKED
           </p>
           <ul class="mt-3 space-y-2">
             {
               abilities.map((a, i) => (
-                <li class="flex items-start gap-3 leading-snug text-[var(--color-ink)]">
-                  <span class="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-sm border-[2px] border-[var(--color-ink)] bg-[var(--color-paper)] font-mono text-[10px] font-bold">
+                <li class="flex items-start gap-3 leading-snug text-ink">
+                  <span class="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-sm border-[2px] border-ink bg-paper font-mono text-[10px] font-bold">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <span>{a}</span>
@@ -104,7 +93,7 @@ const hobbies = getHobbies(locale);
 
         <!-- MIJI · variante "thinking" -->
         <div
-          class="grid place-items-center rounded-2xl border-[5px] border-[var(--color-ink)] bg-[var(--color-pink)]/30 p-6"
+          class="grid place-items-center rounded-2xl border-[5px] border-ink bg-pink/30 p-6"
         >
           <MijiMascot variant="thinking" class="max-w-[240px]" />
         </div>

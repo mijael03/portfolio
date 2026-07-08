@@ -1,4 +1,5 @@
-// Proyectos destacados (showcase con captura real), localizados ES/EN.
+// Proyectos destacados como casos de estudio (con captura real), localizados ES/EN.
+// Formato caso de estudio: problema → rol → solución → stack → impacto → evidencia.
 // El resto de la trayectoria vive en la línea de tiempo (HighScores).
 
 import { t, type Locale } from "../i18n/config";
@@ -8,7 +9,8 @@ export type Project = {
   title: string;
   subtitle: string;
   context: string;
-  description: string;
+  problem: string;
+  solution: string;
   stack: string[];
   metrics?: { label: string; value: string }[];
   role: string;
@@ -26,10 +28,15 @@ export function getProjects(locale: Locale): Project[] {
       title: "Depromine LMS",
       subtitle: t(locale, "Plataforma de cursos para minería", "Mining courses platform"),
       context: "Freelance Full Stack · Depromine EIRL",
-      description: t(
+      problem: t(
         locale,
-        "Diseñé y desarrollé de punta a punta una plataforma LMS para cursos de minería, incluyendo dashboard administrativo tipo CMS con métricas, ventas, usuarios, certificados y libro de reclamaciones.",
-        "Designed and built an end-to-end LMS for mining courses, including a CMS-style admin dashboard with metrics, sales, users, certificates and a complaints book.",
+        "Una empresa de capacitación minera necesitaba vender y dictar sus cursos online, con certificados, pagos y un panel para operar todo sin depender de terceros.",
+        "A mining-training company needed to sell and deliver its courses online — with certificates, payments and a panel to run everything without relying on third parties.",
+      ),
+      solution: t(
+        locale,
+        "Diseñé y construí de punta a punta un LMS completo con dashboard tipo CMS: métricas, ventas, usuarios, certificados, progreso y libro de reclamaciones. Integré pagos, video protegido y autenticación.",
+        "I designed and built an end-to-end LMS with a CMS-style dashboard: metrics, sales, users, certificates, progress and a complaints book. I wired in payments, protected video and authentication.",
       ),
       stack: ["Next.js", "MongoDB", "Prisma", "Vercel", "Culqi", "MUX", "UploadThing", "Google OAuth"],
       metrics: [
@@ -58,15 +65,20 @@ export function getProjects(locale: Locale): Project[] {
       title: "Zefiron CRM",
       subtitle: t(locale, "CRM inmobiliario en Navia", "Real-estate CRM at Navia"),
       context: "Full Stack Dev · Navia",
-      description: t(
+      problem: t(
         locale,
-        "CRM inmobiliario con relación y consolidación de información entre tablas para mejorar consistencia, rendimiento y experiencia. Identifiqué bugs, antipatrones e interoperabilidad frontend ↔ backend y propuse mejoras integrales.",
-        "Real-estate CRM with cross-table data consolidation to improve consistency, performance and UX. I identified bugs, anti-patterns and frontend ↔ backend interoperability issues and proposed end-to-end improvements.",
+        "El CRM inmobiliario arrastraba inconsistencias entre tablas, bugs y antipatrones en la interoperabilidad frontend ↔ backend que golpeaban rendimiento y experiencia.",
+        "The real-estate CRM carried cross-table inconsistencies, bugs and anti-patterns in frontend ↔ backend interoperability that hurt performance and UX.",
+      ),
+      solution: t(
+        locale,
+        "Relacioné y consolidé la información entre tablas para ganar consistencia y rendimiento. Identifiqué los antipatrones y huecos de interoperabilidad y propuse mejoras integrales sobre mobile, API, data y despliegues.",
+        "I related and consolidated data across tables for consistency and performance. I pinpointed the anti-patterns and interoperability gaps and proposed end-to-end improvements across mobile, API, data and deployments.",
       ),
       stack: ["Flutter", "Python", "FastAPI", "PostgreSQL", "Redis", "Docker"],
       metrics: [
         { label: "Stack", value: "Mobile + API" },
-        { label: t(locale, "Foco", "Focus"), value: "Geo · CRM" },
+        { label: t(locale, "Foco", "Focus"), value: t(locale, "Consistencia", "Data consistency") },
       ],
       role: t(
         locale,
@@ -74,6 +86,7 @@ export function getProjects(locale: Locale): Project[] {
         "Frontend, Backend, Data, Deployments",
       ),
       period: t(locale, "Ago 2025 — Actualidad", "Aug 2025 — Present"),
+      highlight: true,
       cartridgeTone: "tomato",
       screenshot: "/projects/zefiron.webp",
       screenshotAlt: t(

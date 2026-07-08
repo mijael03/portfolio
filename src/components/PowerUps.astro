@@ -3,6 +3,7 @@ import SectionLabel from "./SectionLabel.astro";
 import DisplayHeading from "./DisplayHeading.astro";
 import Decor from "./Decor.astro";
 import SkillIcon from "./SkillIcon.astro";
+import CategoryIcon from "./CategoryIcon.astro";
 import { getSkillCategories } from "../data/skills";
 import { toLocale } from "../i18n/config";
 import { useUI } from "../i18n/ui";
@@ -12,11 +13,11 @@ const ui = useUI(locale);
 const skillCategories = getSkillCategories(locale);
 ---
 
-<section id="skills" class="relative overflow-hidden bg-[var(--color-cobalt)] text-[var(--color-paper)] border-y-[5px] border-[var(--color-ink)]">
+<section id="skills" class="relative overflow-hidden bg-cobalt text-paper border-y-[5px] border-ink">
   <div class="mx-auto max-w-7xl px-6 py-24 md:py-32">
     <div class="flex flex-wrap items-center justify-between gap-4">
-      <SectionLabel tone="mustard" number="03">POWER-UPS</SectionLabel>
-      <span class="font-mono text-xs uppercase tracking-widest text-[var(--color-paper)]/70">
+      <SectionLabel tone="mustard" number="04" subtitle={ui.powerUps.subtitle} subtitleTone="paper">{ui.powerUps.label}</SectionLabel>
+      <span class="font-mono text-xs uppercase tracking-widest text-paper/70">
         {ui.powerUps.inventory(skillCategories.reduce((acc, c) => acc + c.skills.length, 0))}
       </span>
     </div>
@@ -25,7 +26,7 @@ const skillCategories = getSkillCategories(locale);
       {ui.powerUps.heading}
     </DisplayHeading>
 
-    <p class="mt-6 max-w-2xl text-lg text-[var(--color-paper)]/90">
+    <p class="mt-6 max-w-2xl text-lg text-paper/90">
       {ui.powerUps.intro}
     </p>
 
@@ -34,27 +35,27 @@ const skillCategories = getSkillCategories(locale);
         skillCategories.map((cat) => (
           <div
             data-skill-card
-            class="relative rounded-2xl border-[5px] border-[var(--color-ink)] bg-[var(--color-paper)] text-[var(--color-ink)] p-6"
+            class="relative rounded-2xl border-[5px] border-ink bg-paper text-ink p-6"
             style="box-shadow: 8px 8px 0 0 var(--color-ink);"
           >
             <div class="flex items-center justify-between">
-              <span class="grid h-10 w-10 place-items-center rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-mustard)] font-display text-lg">
-                {cat.icon}
+              <span class="grid h-10 w-10 place-items-center rounded-md border-[3px] border-ink bg-mustard text-ink">
+                <CategoryIcon name={cat.icon} />
               </span>
-              <span class="font-mono text-[10px] uppercase tracking-widest text-[var(--color-ink)]/60">
+              <span class="font-mono text-[10px] uppercase tracking-widest text-ink/60">
                 {cat.subtitle}
               </span>
             </div>
 
-            <h3 class="mt-4 font-display text-2xl text-[var(--color-cobalt)]">
+            <h3 class="mt-4 font-display text-2xl text-cobalt">
               {cat.title}
             </h3>
 
             <ul class="mt-4 space-y-2.5">
               {cat.skills.map((s) => (
                 <li class="flex items-center gap-3">
-                  <span class="grid h-7 w-7 shrink-0 place-items-center rounded-md border-[2px] border-[var(--color-ink)] bg-[var(--color-paper-deep)] font-mono text-[10px] font-bold">
-                    <SkillIcon slug={s.iconSlug} />
+                  <span class="grid h-7 w-7 shrink-0 place-items-center rounded-md border-[2px] border-ink bg-paper-deep font-mono text-[10px] font-bold">
+                    <SkillIcon slug={s.iconSlug} src={s.iconSrc} />
                   </span>
                   <span class="flex-1 font-mono text-sm">{s.name}</span>
                   {/* Level bar */}
@@ -62,8 +63,8 @@ const skillCategories = getSkillCategories(locale);
                     {Array.from({ length: 5 }, (_, i) => (
                       <span
                         data-level-cell={i < s.level ? "" : undefined}
-                        class={`block h-3 w-2 border-[1.5px] border-[var(--color-ink)] ${
-                          i < s.level ? "bg-[var(--color-tomato)]" : "bg-[var(--color-paper-deep)]"
+                        class={`block h-3 w-2 border-[1.5px] border-ink ${
+                          i < s.level ? "bg-tomato" : "bg-paper-deep"
                         }`}
                       />
                     ))}
@@ -76,16 +77,6 @@ const skillCategories = getSkillCategories(locale);
       }
     </div>
 
-    <!-- Specialty highlight -->
-    <div
-      class="mt-12 flex flex-wrap items-center gap-4 rounded-2xl border-[5px] border-[var(--color-ink)] bg-[var(--color-mustard)] p-6 text-[var(--color-ink)]"
-      style="box-shadow: 8px 8px 0 0 var(--color-ink);"
-    >
-      <span class="font-mono text-xs font-bold uppercase tracking-widest">{ui.powerUps.specialtyLabel}</span>
-      <p class="flex-1 font-display text-xl leading-tight md:text-2xl">
-        {ui.powerUps.specialty}
-      </p>
-    </div>
   </div>
 
   <Decor shape="star" color="tomato" size={48} class="absolute top-16 right-10 hidden md:block" />

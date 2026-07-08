@@ -6,22 +6,17 @@ import {
   siTypescript,
   siPython,
   siDart,
-  siKotlin,
   siPostgresql,
   siNextdotjs,
   siReact,
   siFlutter,
   siAndroid,
-  siSwift,
-  siAngular,
   siFastapi,
   siDjango,
   siNodedotjs,
   siNestjs,
-  siExpress,
   siMongodb,
   siRedis,
-  siMysql,
   siPrisma,
   siDocker,
   siVercel,
@@ -31,31 +26,27 @@ import {
 
 interface Props {
   slug?: string;
+  src?: string;
   size?: number;
 }
 
-const { slug, size = 15 } = Astro.props;
+const { slug, src, size = 15 } = Astro.props;
 
 const bySlug: Record<string, SimpleIcon> = {
   typescript: siTypescript,
   python: siPython,
   dart: siDart,
-  kotlin: siKotlin,
   postgresql: siPostgresql,
   nextjs: siNextdotjs,
   react: siReact,
   flutter: siFlutter,
   android: siAndroid,
-  swift: siSwift,
-  angularjs: siAngular,
   fastapi: siFastapi,
   django: siDjango,
   nodejs: siNodedotjs,
   nestjs: siNestjs,
-  express: siExpress,
   mongodb: siMongodb,
   redis: siRedis,
-  mysql: siMysql,
   prisma: siPrisma,
   docker: siDocker,
   vercel: siVercel,
@@ -76,6 +67,17 @@ const icon = slug ? bySlug[slug] : undefined;
     >
       <path d={icon.path} fill="currentColor"></path>
     </svg>
+  ) : src ? (
+    <img
+      src={src}
+      width={size}
+      height={size}
+      alt=""
+      aria-hidden="true"
+      loading="lazy"
+      decoding="async"
+      class="object-contain"
+    />
   ) : (
     <span aria-hidden="true">□</span>
   )

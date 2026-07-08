@@ -1,0 +1,104 @@
+---
+import SectionLabel from "./SectionLabel.astro";
+import DisplayHeading from "./DisplayHeading.astro";
+import Decor from "./Decor.astro";
+import { toLocale } from "../i18n/config";
+import { useUI } from "../i18n/ui";
+
+const locale = toLocale(Astro.currentLocale);
+const ui = useUI(locale);
+const steps = ui.buildMode.steps;
+
+// Nodos del "level path": cada paso lleva su acento tipo cartucho.
+const nodeTones = [
+  "bg-mustard text-ink",
+  "bg-tomato text-paper",
+  "bg-mint text-ink",
+  "bg-pink text-ink",
+  "bg-cobalt text-paper",
+];
+---
+
+<section id="build" class="relative overflow-hidden bg-ink text-paper border-y-[5px] border-ink">
+  <div class="mx-auto max-w-7xl px-6 py-24 md:py-32">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <SectionLabel tone="mustard" number="03" subtitle={ui.buildMode.subtitle} subtitleTone="paper">
+        {ui.buildMode.label}
+      </SectionLabel>
+      <span class="font-mono text-xs uppercase tracking-widest text-paper/60">
+        {steps.length} STAGES · IDEA → SHIP
+      </span>
+    </div>
+
+    <DisplayHeading as="h2" tone="mustard" shadowTone="paper" size="lg" class="mt-6">
+      {ui.buildMode.heading}
+    </DisplayHeading>
+
+    <p class="mt-6 max-w-2xl text-lg text-paper/85">
+      {ui.buildMode.intro}
+    </p>
+
+    <!-- Level path: 5 nodos conectados (idea → ship) -->
+    <ol class="relative mt-16 grid gap-8 md:grid-cols-5 md:gap-4">
+      <!-- Conector horizontal (desktop): línea dashed detrás de los nodos -->
+      <div
+        class="pointer-events-none absolute left-0 right-0 top-7 hidden h-[3px] md:block"
+        style="background-image: repeating-linear-gradient(90deg, var(--color-mustard) 0 12px, transparent 12px 22px);"
+        aria-hidden="true"
+      ></div>
+
+      {
+        steps.map((step, i) => (
+          <li data-build-step class="relative flex flex-col items-start">
+            <!-- Nodo numerado -->
+            <span
+              class={`relative z-10 grid h-14 w-14 place-items-center rounded-full border-[4px] border-paper font-display text-2xl ${nodeTones[i % nodeTones.length]}`}
+              style="box-shadow: 4px 4px 0 0 rgba(0,0,0,0.35);"
+            >
+              {i + 1}
+            </span>
+            <div class="mt-5 rounded-2xl border-[4px] border-paper/25 bg-ink-soft p-5">
+              <h3 class="font-display text-xl leading-tight text-mustard">
+                {step.title}
+              </h3>
+              <p class="mt-2 text-sm leading-relaxed text-paper/80">
+                {step.body}
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+
+  <Decor shape="star" color="mustard" size={48} class="absolute top-16 right-10 hidden lg:block -rotate-12" />
+  <Decor shape="plus" color="tomato" size={32} class="absolute bottom-24 left-8 hidden md:block" />
+</section>
+
+<script>
+  // Reveal escalonado de los nodos al entrar al viewport (progressive enhancement).
+  import { animate, inView, stagger } from "motion";
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const steps = document.querySelectorAll<HTMLElement>("[data-build-step]");
+
+  if (!reducedMotion.matches && steps.length) {
+    for (const s of steps) s.style.opacity = "0";
+
+    const container = steps[0].closest("ol");
+    if (container) {
+      const stop = inView(
+        container,
+        () => {
+          animate(
+            steps,
+            { opacity: [0, 1], y: [16, 0] },
+            { delay: stagger(0.09), type: "spring", stiffness: 300, damping: 24 },
+          );
+          stop();
+        },
+        { amount: 0.2 },
+      );
+    }
+  }
+</script>

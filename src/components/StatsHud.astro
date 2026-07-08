@@ -1,0 +1,68 @@
+---
+import SectionLabel from "./SectionLabel.astro";
+import { getHeadlineMetrics, type HeadlineMetric } from "../data/profile";
+import { toLocale } from "../i18n/config";
+import { useUI } from "../i18n/ui";
+
+const locale = toLocale(Astro.currentLocale);
+const ui = useUI(locale);
+const metrics = getHeadlineMetrics(locale);
+
+const toneBg: Record<HeadlineMetric["tone"], string> = {
+  cobalt: "bg-cobalt text-paper",
+  tomato: "bg-tomato text-paper",
+  mustard: "bg-mustard text-ink",
+  mint: "bg-mint text-ink",
+};
+---
+
+<section id="stats" class="relative overflow-hidden bg-paper-deep border-y-[5px] border-ink">
+  <div class="mx-auto max-w-7xl px-6 py-16 md:py-20">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <SectionLabel tone="ink" subtitle={ui.statsHud.subtitle}>{ui.statsHud.heading}</SectionLabel>
+      <span class="font-mono text-xs uppercase tracking-widest text-ink/60 animate-pulse">
+        {ui.continue.insertCoin}
+      </span>
+    </div>
+
+    <!-- Bento: capacidades (grande) + 4 métricas (2×2) -->
+    <div class="mt-10 grid gap-5 md:grid-cols-4 md:auto-rows-[1fr]">
+      <!-- Tile capacidades -->
+      <div
+        class="flex flex-col justify-between rounded-2xl border-[5px] border-ink bg-ink text-paper p-7 md:col-span-2 md:row-span-2"
+        style="box-shadow: 8px 8px 0 0 var(--color-ink);"
+      >
+        <p class="font-mono text-xs font-bold uppercase tracking-widest text-mustard">
+          {ui.statsHud.capabilitiesLabel}
+        </p>
+        <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+          {
+            ui.statsHud.capabilities.map((cap) => (
+              <li class="flex items-center gap-3 font-display text-lg leading-tight md:text-xl">
+                <span class="grid h-6 w-6 shrink-0 place-items-center rounded-sm border-[2px] border-mustard font-mono text-[10px] text-mustard" aria-hidden="true">
+                  ▸
+                </span>
+                {cap}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Métricas -->
+      {
+        metrics.map((m) => (
+          <div
+            class={`flex flex-col justify-center rounded-2xl border-[5px] border-ink p-6 ${toneBg[m.tone]}`}
+            style="box-shadow: 8px 8px 0 0 var(--color-ink);"
+          >
+            <p class="font-display text-4xl leading-none md:text-5xl">{m.value}</p>
+            <p class="mt-2 font-mono text-[11px] font-bold uppercase tracking-widest opacity-85">
+              {m.label}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

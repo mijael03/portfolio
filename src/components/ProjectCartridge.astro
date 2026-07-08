@@ -12,27 +12,27 @@ const locale = toLocale(Astro.currentLocale);
 const ui = useUI(locale);
 
 const toneBg: Record<Project["cartridgeTone"], string> = {
-  cobalt: "bg-[var(--color-cobalt)] text-[var(--color-paper)]",
-  tomato: "bg-[var(--color-tomato)] text-[var(--color-paper)]",
-  mustard: "bg-[var(--color-mustard)] text-[var(--color-ink)]",
-  pink: "bg-[var(--color-pink)] text-[var(--color-ink)]",
+  cobalt: "bg-cobalt text-paper",
+  tomato: "bg-tomato text-paper",
+  mustard: "bg-mustard text-ink",
+  pink: "bg-pink text-ink",
 };
 
 const toneInverse: Record<Project["cartridgeTone"], string> = {
-  cobalt: "bg-[var(--color-paper)] text-[var(--color-ink)]",
-  tomato: "bg-[var(--color-paper)] text-[var(--color-ink)]",
-  mustard: "bg-[var(--color-ink)] text-[var(--color-paper)]",
-  pink: "bg-[var(--color-ink)] text-[var(--color-paper)]",
+  cobalt: "bg-paper text-ink",
+  tomato: "bg-paper text-ink",
+  mustard: "bg-ink text-paper",
+  pink: "bg-ink text-paper",
 };
 ---
 
 <article
   data-cartridge
-  class={`group relative flex flex-col rounded-2xl border-[5px] border-[var(--color-ink)] overflow-hidden ${toneBg[project.cartridgeTone]}`}
+  class={`group relative flex flex-col rounded-2xl border-[5px] border-ink overflow-hidden ${toneBg[project.cartridgeTone]}`}
   style="box-shadow: 10px 10px 0 0 var(--color-ink);"
 >
   <!-- Tag superior estilo cartucho -->
-  <div class={`flex items-center justify-between border-b-[4px] border-[var(--color-ink)] px-5 py-2 ${toneInverse[project.cartridgeTone]}`}>
+  <div class={`flex items-center justify-between border-b-[4px] border-ink px-5 py-2 ${toneInverse[project.cartridgeTone]}`}>
     <span class="font-mono text-[10px] font-bold uppercase tracking-widest">
       {project.context}
     </span>
@@ -42,18 +42,18 @@ const toneInverse: Record<Project["cartridgeTone"], string> = {
   </div>
 
   <!-- Screenshot real en marco tipo navegador (unifica capturas de temas distintos) -->
-  <div class="border-b-[4px] border-[var(--color-ink)]">
+  <div class="border-b-[4px] border-ink">
     <!-- barra de navegador: traffic-lights + título -->
-    <div class={`flex items-center gap-1.5 border-b-[3px] border-[var(--color-ink)] px-3 py-2 ${toneInverse[project.cartridgeTone]}`}>
-      <span class="h-2.5 w-2.5 rounded-full border-[1.5px] border-[var(--color-ink)] bg-[var(--color-tomato)]"></span>
-      <span class="h-2.5 w-2.5 rounded-full border-[1.5px] border-[var(--color-ink)] bg-[var(--color-mustard)]"></span>
-      <span class="h-2.5 w-2.5 rounded-full border-[1.5px] border-[var(--color-ink)] bg-[var(--color-cobalt)]"></span>
+    <div class={`flex items-center gap-1.5 border-b-[3px] border-ink px-3 py-2 ${toneInverse[project.cartridgeTone]}`}>
+      <span class="h-2.5 w-2.5 rounded-full border-[1.5px] border-ink bg-tomato"></span>
+      <span class="h-2.5 w-2.5 rounded-full border-[1.5px] border-ink bg-mustard"></span>
+      <span class="h-2.5 w-2.5 rounded-full border-[1.5px] border-ink bg-cobalt"></span>
       <span class="ml-2 truncate font-mono text-[9px] font-bold uppercase tracking-widest opacity-70">
         {project.subtitle}
       </span>
     </div>
     <!-- captura: 2:1 = casi sin recorte; object-top protege headers/KPIs -->
-    <div class="relative aspect-[2/1] overflow-hidden bg-[var(--color-ink)]">
+    <div class="relative aspect-[2/1] overflow-hidden bg-ink">
       <img
         src={project.screenshot}
         alt={project.screenshotAlt}
@@ -63,7 +63,7 @@ const toneInverse: Record<Project["cartridgeTone"], string> = {
       />
       {project.highlight && (
         <span
-          class="absolute -right-2 -top-2 z-10 rotate-6 rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-mustard)] px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest text-[var(--color-ink)]"
+          class="absolute -right-2 -top-2 z-10 rotate-6 rounded-md border-[3px] border-ink bg-mustard px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest text-ink"
           style="box-shadow: 2px 2px 0 0 var(--color-ink);"
         >
           {ui.gameSelect.featured}
@@ -72,8 +72,8 @@ const toneInverse: Record<Project["cartridgeTone"], string> = {
     </div>
   </div>
 
-  <!-- Body -->
-  <div class="flex flex-1 flex-col gap-4 p-6">
+  <!-- Body: caso de estudio -->
+  <div class="flex flex-1 flex-col gap-5 p-6">
     <div>
       <h3 class="font-display text-2xl leading-tight md:text-3xl">
         {project.title}
@@ -83,38 +83,63 @@ const toneInverse: Record<Project["cartridgeTone"], string> = {
       </p>
     </div>
 
-    <p class="text-sm leading-relaxed opacity-95">
-      {project.description}
-    </p>
+    <!-- Problema -->
+    <div>
+      <p class="font-mono text-[10px] font-bold uppercase tracking-widest opacity-70">
+        {ui.gameSelect.problemLabel}
+      </p>
+      <p class="mt-1.5 text-sm leading-relaxed opacity-95">
+        {project.problem}
+      </p>
+    </div>
 
+    <!-- Solución -->
+    <div>
+      <p class="font-mono text-[10px] font-bold uppercase tracking-widest opacity-70">
+        {ui.gameSelect.solutionLabel}
+      </p>
+      <p class="mt-1.5 text-sm leading-relaxed opacity-95">
+        {project.solution}
+      </p>
+    </div>
+
+    <!-- Impacto (métricas) -->
     {project.metrics && (
-      <div class="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        {project.metrics.map((m) => (
-          <div class={`rounded-md border-[2px] border-[var(--color-ink)] px-2 py-1.5 ${toneInverse[project.cartridgeTone]}`}>
-            <p class="font-mono text-[9px] uppercase tracking-widest opacity-70">
-              {m.label}
-            </p>
-            <p class="font-display text-base leading-tight">{m.value}</p>
-          </div>
-        ))}
+      <div>
+        <p class="font-mono text-[10px] font-bold uppercase tracking-widest opacity-70">
+          {ui.gameSelect.impactLabel}
+        </p>
+        <div class="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
+          {project.metrics.map((m) => (
+            <div class={`rounded-md border-[2px] border-ink px-2 py-1.5 ${toneInverse[project.cartridgeTone]}`}>
+              <p class="font-display text-lg leading-tight">{m.value}</p>
+              <p class="font-mono text-[9px] uppercase tracking-widest opacity-70">
+                {m.label}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     )}
 
-    <div class="flex flex-wrap gap-2 pt-2">
-      {project.stack.map((tech) => (
-        <span class={`rounded-full border-[2px] border-[var(--color-ink)] px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest ${toneInverse[project.cartridgeTone]}`}>
-          {tech}
-        </span>
-      ))}
+    <!-- Stack -->
+    <div>
+      <p class="font-mono text-[10px] font-bold uppercase tracking-widest opacity-70">
+        {ui.gameSelect.stackLabel}
+      </p>
+      <div class="mt-2 flex flex-wrap gap-2">
+        {project.stack.map((tech) => (
+          <span class={`rounded-full border-[2px] border-ink px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest ${toneInverse[project.cartridgeTone]}`}>
+            {tech}
+          </span>
+        ))}
+      </div>
     </div>
 
-    <div class="mt-auto flex items-center justify-between border-t-[3px] border-dashed border-[var(--color-ink)] pt-3">
+    <!-- Rol -->
+    <div class="mt-auto flex flex-wrap items-center justify-between gap-2 border-t-[3px] border-dashed border-ink pt-3">
       <span class="font-mono text-[10px] uppercase tracking-widest opacity-75">
-        {project.role}
-      </span>
-      <!-- TODO: link a /proyectos/[slug] cuando existan detail pages -->
-      <span class="font-mono text-[10px] font-bold uppercase tracking-widest opacity-50">
-        {ui.gameSelect.detailsSoon}
+        <span class="opacity-70">{ui.gameSelect.roleLabel}</span> {project.role}
       </span>
     </div>
   </div>

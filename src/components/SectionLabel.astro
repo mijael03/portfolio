@@ -4,25 +4,38 @@ type Tone = "cobalt" | "tomato" | "mustard" | "ink" | "paper";
 interface Props {
   tone?: Tone;
   number?: string;
+  /** Subtítulo profesional junto al label arcade (ej. "Casos de estudio") */
+  subtitle?: string;
+  /** Color del subtítulo: por defecto hereda ink; "paper" para fondos oscuros */
+  subtitleTone?: "ink" | "paper";
   class?: string;
 }
 
-const { tone = "ink", number, class: className = "" } = Astro.props;
+const {
+  tone = "ink",
+  number,
+  subtitle,
+  subtitleTone = "ink",
+  class: className = "",
+} = Astro.props;
 
 const toneClasses: Record<Tone, string> = {
-  cobalt: "bg-[var(--color-cobalt)] text-[var(--color-paper)]",
-  tomato: "bg-[var(--color-tomato)] text-[var(--color-paper)]",
-  mustard: "bg-[var(--color-mustard)] text-[var(--color-ink)]",
-  ink: "bg-[var(--color-ink)] text-[var(--color-paper)]",
-  paper: "bg-[var(--color-paper)] text-[var(--color-ink)]",
+  cobalt: "bg-cobalt text-paper",
+  tomato: "bg-tomato text-paper",
+  mustard: "bg-mustard text-ink",
+  ink: "bg-ink text-paper",
+  paper: "bg-paper text-ink",
 };
+
+const subtitleClass =
+  subtitleTone === "paper" ? "text-paper/70" : "text-ink/60";
 ---
 
-<div class={`inline-flex items-center gap-3 ${className}`}>
+<div class={`inline-flex flex-wrap items-center gap-x-3 gap-y-2 ${className}`}>
   {
     number && (
       <span
-        class="grid h-8 w-8 place-items-center rounded-md border-[3px] border-[var(--color-ink)] bg-[var(--color-mustard)] font-display text-base text-[var(--color-ink)]"
+        class="grid h-8 w-8 place-items-center rounded-md border-[3px] border-ink bg-mustard font-display text-base text-ink"
         style="box-shadow: 3px 3px 0 0 var(--color-ink);"
       >
         {number}
@@ -30,9 +43,16 @@ const toneClasses: Record<Tone, string> = {
     )
   }
   <span
-    class={`inline-flex items-center rounded-md border-[3px] border-[var(--color-ink)] px-3 py-1.5 font-mono text-xs font-bold uppercase tracking-[0.2em] ${toneClasses[tone]}`}
+    class={`inline-flex items-center rounded-md border-[3px] border-ink px-3 py-1.5 font-mono text-xs font-bold uppercase tracking-[0.2em] ${toneClasses[tone]}`}
     style="box-shadow: 3px 3px 0 0 var(--color-ink);"
   >
     <slot />
   </span>
+  {
+    subtitle && (
+      <span class={`font-mono text-xs uppercase tracking-widest ${subtitleClass}`}>
+        <span aria-hidden="true">/</span> {subtitle}
+      </span>
+    )
+  }
 </div>

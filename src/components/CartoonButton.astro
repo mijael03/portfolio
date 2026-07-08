@@ -21,10 +21,10 @@ const {
 const Tag = href ? "a" : "button";
 
 const variantClasses: Record<Variant, string> = {
-  cobalt: "bg-[var(--color-cobalt)] text-[var(--color-paper)] hover:bg-[var(--color-cobalt-deep)]",
-  tomato: "bg-[var(--color-tomato)] text-[var(--color-paper)] hover:bg-[var(--color-tomato-deep)]",
-  mustard: "bg-[var(--color-mustard)] text-[var(--color-ink)] hover:bg-[var(--color-mustard-deep)]",
-  ink: "bg-[var(--color-ink)] text-[var(--color-paper)] hover:bg-[var(--color-ink-soft)]",
+  cobalt: "bg-cobalt text-paper hover:bg-cobalt-deep",
+  tomato: "bg-tomato text-paper hover:bg-tomato-deep",
+  mustard: "bg-mustard text-ink hover:bg-mustard-deep",
+  ink: "bg-ink text-paper hover:bg-ink-soft",
 };
 
 const sizeClasses: Record<NonNullable<Props["size"]>, string> = {
@@ -37,7 +37,7 @@ const sizeClasses: Record<NonNullable<Props["size"]>, string> = {
 <Tag
   href={href}
   {...rest}
-  class={`cartoon-btn inline-flex items-center gap-2 font-mono font-bold uppercase tracking-wider border-[3px] border-[var(--color-ink)] rounded-md transition-all duration-150 ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
+  class={`cartoon-btn inline-flex items-center gap-2 font-mono font-bold uppercase tracking-wider border-[3px] border-ink rounded-md transition-all duration-150 ${variantClasses[variant]} ${sizeClasses[size]} ${className}`}
   style="box-shadow: 5px 5px 0 0 var(--color-ink);"
 >
   <slot />

@@ -1,0 +1,77 @@
+---
+import SectionLabel from "./SectionLabel.astro";
+import DisplayHeading from "./DisplayHeading.astro";
+import CartoonButton from "./CartoonButton.astro";
+import Decor from "./Decor.astro";
+import { toLocale } from "../i18n/config";
+import { useUI } from "../i18n/ui";
+
+const locale = toLocale(Astro.currentLocale);
+const ui = useUI(locale);
+const items = ui.services.items;
+
+// Acentos por tarjeta (cabecera del cartucho de servicio).
+const accents = [
+  "bg-cobalt text-paper",
+  "bg-tomato text-paper",
+  "bg-mint text-ink",
+  "bg-mustard text-ink",
+];
+---
+
+<section id="services" class="relative overflow-hidden bg-paper-deep border-t-[5px] border-ink">
+  <div class="mx-auto max-w-7xl px-6 py-24 md:py-32">
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <SectionLabel tone="tomato" number="05" subtitle={ui.services.subtitle}>{ui.services.label}</SectionLabel>
+    </div>
+
+    <DisplayHeading as="h2" tone="ink" shadowTone="mustard" size="lg" class="mt-6">
+      {ui.services.heading}
+    </DisplayHeading>
+
+    <p class="mt-6 max-w-2xl text-lg text-ink-soft">
+      {ui.services.intro}
+    </p>
+
+    <!-- Bento de capacidades freelance -->
+    <div class="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {
+        items.map((item, i) => (
+          <article
+            class="flex flex-col rounded-2xl border-[5px] border-ink bg-paper text-ink overflow-hidden"
+            style="box-shadow: 8px 8px 0 0 var(--color-ink);"
+          >
+            <div class={`flex items-center gap-3 border-b-[4px] border-ink px-5 py-3 ${accents[i % accents.length]}`}>
+              <span class="grid h-9 w-9 shrink-0 place-items-center rounded-md border-[3px] border-ink bg-paper font-display text-lg text-ink">
+                {item.icon}
+              </span>
+              <h3 class="font-display text-lg leading-tight">{item.title}</h3>
+            </div>
+            <div class="flex flex-1 flex-col gap-4 p-5">
+              <p class="text-sm leading-relaxed text-ink-soft">{item.body}</p>
+              <div class="mt-auto flex flex-wrap gap-1.5">
+                {item.tags.map((tag) => (
+                  <span class="rounded-full border-[2px] border-ink bg-paper-deep px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-widest">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="mt-12 flex flex-wrap items-center gap-4 rounded-2xl border-[5px] border-ink bg-cobalt p-6 text-paper" style="box-shadow: 8px 8px 0 0 var(--color-ink);">
+      <p class="flex-1 font-display text-xl leading-tight md:text-2xl">
+        {ui.services.subtitle} · {ui.hero.metaYears}
+      </p>
+      <CartoonButton href="#contact" variant="tomato" size="lg" data-sfx="click">
+        {ui.services.cta}
+      </CartoonButton>
+    </div>
+  </div>
+
+  <Decor shape="sparkle" color="tomato" size={44} class="absolute top-16 right-12 hidden md:block rotate-12" />
+  <Decor shape="plus" color="cobalt" size={30} class="absolute bottom-24 left-8 hidden md:block" />
+</section>
