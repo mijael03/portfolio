@@ -46,7 +46,9 @@ con prueba para empresas (casos de estudio), no con el pitch freelance.
 |---|---|---|---|
 | C12 | Bloque "⚡ Especialidad" | Descartado (componente + strings ES/EN). | ✅ |
 | C13 | Iconos raros: Culqi, MUX, UploadThing | Assets de marca en `/public` cableados vía `iconSrc` + `<img>` en SkillIcon (culqi.svg · mux.svg · uploadthing.ico). | ✅ |
-| C14 | Glyphs feos de cabecera de categoría (`⚙ ▤ ▷ ▢`) | Aún pendiente. Nota: los 3 logos de marca (color) conviven con ~20 iconos monocromo ink — inconsistencia leve, inherente a usar assets de marca. | 📋 |
+| C14 | Glyphs feos de cabecera de categoría (`⚙ ▤ ▷ ▢`) | Reemplazados por set de línea (Lucide, trazo 2.5 ink) vía `CategoryIcon.astro`: braces · devices · server · database · git-branch · cable. `icons.md` (fuente) eliminado. | ✅ |
+| C16 | Orden de la nav mal tras mover BuildMode | Corregido: Casos → Build Mode → Stack → Servicios → Contacto (coincide con el scroll). | ✅ |
+| C17 | Iconos de las cards de Services (`▢ ▤ ✦`) y de contacto (`▷_`) siguen siendo glyphs | Ahora se ven inferiores a las categorías. Unificar al mismo lenguaje de línea. | 💡 pendiente |
 | C14b | Imports muertos en `SkillIcon.astro` | Limpiados (Kotlin/Swift/Angular/Express/MySQL). | ✅ |
 
 ## E. Game Select / Casos
